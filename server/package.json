@@ -1,0 +1,33 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "movies review",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "server": "nodemon index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@babel/core": "^7.0.0-beta.39",
+        "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.39",
+        "@babel/plugin-transform-async-to-generator": "^7.0.0-beta.39",
+        "@babel/preset-env": "^7.0.0-beta.39",
+        "@babel/register": "^7.0.0-beta.39",
+        "bcrypt": "^1.0.3",
+        "cors": "^2.8.4",
+        "dotenv": "^5.0.0",
+        "express": "^4.16.2",
+        "express-session": "^1.15.6",
+        "moment": "^2.20.1",
+        "mongoose": "^5.0.3",
+        "passport": "^0.4.0",
+        "passport-local": "^1.0.0",
+        "use-strict": "^1.0.1",
+        "validator": "^9.4.0"
+    },
+    "devDependencies": {
+        "nodemon": "^1.14.12"
+    }
+}

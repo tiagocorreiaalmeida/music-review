@@ -1,0 +1,22 @@
+/////////////////////////////////////////////////////////
+-------------DEFAULT ERRORS ----------------
+
+500 - unexpected-error
+
+/////////////////////////////////////////////////////////
+-------------REGISTER - LOGIN - AUTHENTICATION ----------------
+
+--Register
+409 - invalid-email
+409 - email-exists
+409 - username-exists
+
+--Activation
+400 - invalid-link
+
+--Login
+401 - login-failed
+409 - active-account
+
+--auth 
+401 - not-logged
