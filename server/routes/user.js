@@ -3,11 +3,14 @@ import bcrypt from "bcrypt";
 import validator from "validator";
 import moment from "moment";
 import passport from "passport";
+import multer from "multer";
 
 import User from "../models/user";
 import auth from "../utils/auth";
 
-const router = express.Router();
+const router = express.Router(),
+    storage = multer.memoryStorage(),
+    upload = multer({ storage });
 
 const encryptIt = password => {
     let salt = bcrypt.genSaltSync(10);
@@ -111,6 +114,28 @@ router.patch("/update-password", auth, async (req, res) => {
     try {
         await User.update({ _id: req.user.id }, { password });
         res.send();
+    } catch (e) {
+        res.error(500, "unexpected-error", e);
+    }
+});
+
+router.patch("/avatar", upload.single("avatar"), auth, async (req, res) => {
+    const file = req.file;
+    if (file.size / 1000000 > 4) return res.error(409, "file-size-exceeded");
+    if (
+        file.mimetype.split("/")[1] !== "png" &&
+        file.mimetype.split("/")[1] !== "jpeg"
+    )
+        return res.error(409, "invalid-file");
+    try {
+        let user = await User.findByIdAndUpdate(
+            req.user.id,
+            {
+                avatar: file.buffer.toString("base64")
+            },
+            { new: true }
+        );
+        res.send(user);
     } catch (e) {
         res.error(500, "unexpected-error", e);
     }

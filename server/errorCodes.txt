@@ -20,3 +20,7 @@
 
 --auth 
 401 - not-logged
+
+--avatar
+409 - file-size-exceeded
+409 - invalid-file
