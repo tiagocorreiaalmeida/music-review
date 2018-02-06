@@ -7,6 +7,7 @@ import mongoose from "./config/mongoose";
 import errorHandler from "./utils/errorHandler";
 import passportConfig from "./controllers/passport";
 import user from "./routes/user";
+import spotify from "./routes/spotify";
 
 const app = express(),
     port = process.env.PORT || 3000;
@@ -32,5 +33,6 @@ app.options("*", cors());
 app.use(errorHandler);
 
 app.use("/api/user", user);
+app.use("/api/spotify", spotify);
 
 app.listen(port, () => console.log(`Running on port ${port}`));

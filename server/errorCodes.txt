@@ -24,3 +24,8 @@
 --avatar
 409 - file-size-exceeded
 409 - invalid-file
+
+/////////////////////////////////////////////////////////
+-------------SPOTIFY API ----------------
+
+204 - not-data-found
