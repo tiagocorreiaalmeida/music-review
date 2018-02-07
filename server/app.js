@@ -8,6 +8,7 @@ import errorHandler from "./utils/errorHandler";
 import passportConfig from "./controllers/passport";
 import user from "./routes/user";
 import spotify from "./routes/spotify";
+import post from "./routes/post";
 
 const app = express(),
     port = process.env.PORT || 3000;
@@ -34,5 +35,6 @@ app.use(errorHandler);
 
 app.use("/api/user", user);
 app.use("/api/spotify", spotify);
+app.use("/api/post", post);
 
 app.listen(port, () => console.log(`Running on port ${port}`));

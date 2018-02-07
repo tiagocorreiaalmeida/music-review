@@ -23,17 +23,23 @@ router.post("/register", async (req, res) => {
         username = req.body.username,
         activateKey = encryptIt(email + moment().valueOf());
 
-    if (!validator.isEmail(email)) return res.error(409, "invalid-email");
+    if (!validator.isEmail(email))
+        return res.error(409, "The email you have chosen is invalid!");
 
     try {
         const dataAvaible = await User.findOne({
             $or: [{ email }, { username }]
         });
-        console.log(dataAvaible);
         if (dataAvaible && dataAvaible.email === email)
-            return res.error(409, "email-exists");
+            return res.error(
+                409,
+                "The email you have chosen is already in use!"
+            );
         if (dataAvaible && dataAvaible.username === username)
-            return res.error(409, "username-exists");
+            return res.error(
+                409,
+                "The username you have chosen is already in use!"
+            );
 
         await User.create({
             email,
@@ -44,7 +50,11 @@ router.post("/register", async (req, res) => {
 
         //send email with activation link
     } catch (e) {
-        res.error(500, "unexpected-error", e);
+        res.error(
+            500,
+            "Something went wrong please refresh the page and try again",
+            e
+        );
     } finally {
         res.status(201).send();
     }
@@ -61,7 +71,11 @@ router.get(/\/activate\/(.+)/, async (req, res) => {
             active: true
         });
     } catch (e) {
-        res.error(500, "unexpected-error", e);
+        res.error(
+            500,
+            "Something went wrong please refresh the page and try again",
+            e
+        );
     } finally {
         res.send();
     }
@@ -69,10 +83,11 @@ router.get(/\/activate\/(.+)/, async (req, res) => {
 
 router.post("/login", (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
-        if (!user || err) return res.error(401, "login-failed");
-        if (user === "inactive") return res.error(409, "active-account");
+        if (!user || err) return res.error(401, "Your login failed!");
+        if (user === "inactive")
+            return res.error(409, "Please activate your account before!");
         req.logIn(user, e => {
-            if (err) return res.error(401, "login-failed");
+            if (err) return res.error(401, "Your login failed!");
             res.send(user);
         });
     })(req, res, next);
@@ -96,14 +111,22 @@ router.patch("/update", auth, async (req, res) => {
                 _id: { $ne: req.user.id },
                 username: userUpdates.username
             });
-            if (userNameExists) return res.error(401, "username-exists");
+            if (userNameExists)
+                return res.error(
+                    401,
+                    "The username you have chosen is already in use!"
+                );
 
             user = await User.findByIdAndUpdate(req.user.id, userUpdates, {
                 new: true
             });
         }
     } catch (e) {
-        res.error(500, "unexpected-error", e);
+        res.error(
+            500,
+            "Something went wrong please refresh the page and try again",
+            e
+        );
     } finally {
         res.send(user);
     }
@@ -115,18 +138,26 @@ router.patch("/update-password", auth, async (req, res) => {
         await User.update({ _id: req.user.id }, { password });
         res.send();
     } catch (e) {
-        res.error(500, "unexpected-error", e);
+        res.error(
+            500,
+            "Something went wrong please refresh the page and try again",
+            e
+        );
     }
 });
 
 router.patch("/avatar", upload.single("avatar"), auth, async (req, res) => {
     const file = req.file;
-    if (file.size / 1000000 > 4) return res.error(409, "file-size-exceeded");
+    if (file.size / 1000000 > 4)
+        return res.error(
+            409,
+            "The avatar you have chosen exceeds the limit size!"
+        );
     if (
         file.mimetype.split("/")[1] !== "png" &&
         file.mimetype.split("/")[1] !== "jpeg"
     )
-        return res.error(409, "invalid-file");
+        return res.error(409, "The avatar you have chosen is invalid!");
     try {
         let user = await User.findByIdAndUpdate(
             req.user.id,
@@ -137,7 +168,11 @@ router.patch("/avatar", upload.single("avatar"), auth, async (req, res) => {
         );
         res.send(user);
     } catch (e) {
-        res.error(500, "unexpected-error", e);
+        res.error(
+            500,
+            "Something went wrong please refresh the page and try again",
+            e
+        );
     }
 });
 

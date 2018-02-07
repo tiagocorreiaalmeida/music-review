@@ -23,12 +23,12 @@ setSpotifyAccessToken();
 router.get(/(.+)/, auth, async (req, res) => {
     let albumName = req.params[0];
     try {
-        let a = await spotifyApi.searchAlbums(albumName, {
+        let apiResponse = await spotifyApi.searchAlbums(albumName, {
             limit: 3
         });
-        if (a.body.albums.items.length == 0)
-            return res.error(204, "no-data-found");
-        let dataClean = a.body.albums.items.map(ele => ({
+        if (apiResponse.body.albums.items.length == 0)
+            return res.error(204, "No results found based on your search!");
+        let dataClean = apiResponse.body.albums.items.map(ele => ({
             name: ele.name,
             link: ele.external_urls.spotify,
             thumbnail: ele.images[2].url,
@@ -40,7 +40,11 @@ router.get(/(.+)/, auth, async (req, res) => {
         }));
         res.send(dataClean);
     } catch (e) {
-        res.error(500, "unexpected-error", e);
+        res.error(
+            500,
+            "Something went wrong please refresh the page and try again",
+            e
+        );
     }
 });
 

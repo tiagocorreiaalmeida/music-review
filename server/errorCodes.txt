@@ -1,31 +1,44 @@
 /////////////////////////////////////////////////////////
 -------------DEFAULT ERRORS ----------------
 
-500 - unexpected-error
+500 - Something went wrong please refresh the page and try again
 
 /////////////////////////////////////////////////////////
 -------------REGISTER - LOGIN - AUTHENTICATION ----------------
 
 --Register
-409 - invalid-email
-409 - email-exists
-409 - username-exists
+409 - The email you have chosen is invalid!
+409 - The email you have chosen is already in use!
+409 - The username you have chosen is already in use!
 
 --Activation
 400 - invalid-link
 
 --Login
-401 - login-failed
-409 - active-account
+401 - Your login failed!
+409 - Please activate your account before!
 
 --auth 
 401 - not-logged
 
 --avatar
-409 - file-size-exceeded
-409 - invalid-file
+409 - The avatar you have chosen exceeds the limit size!
+409 - The avatar you have chosen is invalid!
 
 /////////////////////////////////////////////////////////
 -------------SPOTIFY API ----------------
 
-204 - not-data-found
+204 - not-data-found No results found based on your search!
+
+/////////////////////////////////////////////////////////
+------------- POSTS REQUESTS ----------------
+
+409 - The title minimum length is 4 characters!
+409 - The title maximum length is 140 characters!
+409 - The title you have chosen is already in use!
+
+409 - The review minimum length is 100 characters!
+
+409 - The album name is missing!
+409 - The album link is missing!
+
