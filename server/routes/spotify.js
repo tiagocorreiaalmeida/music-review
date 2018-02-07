@@ -27,7 +27,7 @@ router.get(/(.+)/, auth, async (req, res) => {
             limit: 3
         });
         if (apiResponse.body.albums.items.length == 0)
-            return res.error(204, "No results found based on your search!");
+            return res.error(409, "No results found based on your search!");
         let dataClean = apiResponse.body.albums.items.map(ele => ({
             name: ele.name,
             link: ele.external_urls.spotify,

@@ -1,64 +1,84 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import validator from "validator";
 import moment from "moment";
 import passport from "passport";
 import multer from "multer";
+import mongo from "mongodb";
+import { body, validationResult } from "express-validator/check";
 
 import User from "../models/user";
+import Post from "../models/post";
 import auth from "../utils/auth";
 
 const router = express.Router(),
     storage = multer.memoryStorage(),
-    upload = multer({ storage });
+    upload = multer({ storage }),
+    { ObjectID } = mongo;
 
 const encryptIt = password => {
     let salt = bcrypt.genSaltSync(10);
     return bcrypt.hashSync(password, salt);
 };
 
-router.post("/register", async (req, res) => {
-    let email = req.body.email,
-        password = encryptIt(req.body.password),
-        username = req.body.username,
-        activateKey = encryptIt(email + moment().valueOf());
+router.post(
+    "/register",
+    [
+        body("email")
+            .exists()
+            .isEmail()
+            .withMessage("The email you have chosen is invalid!"),
+        body("password")
+            .trim()
+            .isLength({ min: 4 })
+            .withMessage("The password minimum length is 4 characters!"),
+        body("username")
+            .trim()
+            .isLength({ min: 2 })
+            .withMessage("The username minimum length is 2 characters!")
+    ],
+    async (req, res) => {
+        try {
+            let errors = validationResult(req);
+            if (!errors.isEmpty()) return res.error(409, errors.array()[0].msg);
 
-    if (!validator.isEmail(email))
-        return res.error(409, "The email you have chosen is invalid!");
+            let email = req.body.email,
+                password = encryptIt(req.body.password),
+                username = req.body.username,
+                activateKey = encryptIt(email + moment().valueOf());
 
-    try {
-        const dataAvaible = await User.findOne({
-            $or: [{ email }, { username }]
-        });
-        if (dataAvaible && dataAvaible.email === email)
-            return res.error(
-                409,
-                "The email you have chosen is already in use!"
+            const dataAvaible = await User.findOne({
+                $or: [{ email }, { username }]
+            });
+            if (dataAvaible && dataAvaible.email === email)
+                return res.error(
+                    409,
+                    "The email you have chosen is already in use!"
+                );
+            if (dataAvaible && dataAvaible.username === username)
+                return res.error(
+                    409,
+                    "The username you have chosen is already in use!"
+                );
+
+            await User.create({
+                email,
+                password,
+                username,
+                activateKey
+            });
+
+            //send email with activation link
+        } catch (e) {
+            res.error(
+                500,
+                "Something went wrong please refresh the page and try again",
+                e
             );
-        if (dataAvaible && dataAvaible.username === username)
-            return res.error(
-                409,
-                "The username you have chosen is already in use!"
-            );
-
-        await User.create({
-            email,
-            password,
-            username,
-            activateKey
-        });
-
-        //send email with activation link
-    } catch (e) {
-        res.error(
-            500,
-            "Something went wrong please refresh the page and try again",
-            e
-        );
-    } finally {
-        res.status(201).send();
+        } finally {
+            res.status(201).send();
+        }
     }
-});
+);
 
 router.get(/\/activate\/(.+)/, async (req, res) => {
     let activateKey = req.params[0];
@@ -105,8 +125,23 @@ router.patch("/update", auth, async (req, res) => {
         },
         user;
 
+    if (userUpdates.password) {
+        delete userUpdates.password;
+    } else if (userUpdates.avatar) {
+        delete userUpdates.avatar;
+    } else if (userUpdates.isAdmin) {
+        delete userUpdates.isAdmin;
+    } else if (userUpdates.createdAt) {
+        delete userUpdates.createdAt;
+    }
+
     try {
         if (userUpdates.username) {
+            if (userUpdates.username.length < 2)
+                return res.error(
+                    409,
+                    "The username minimum length is 2 characters!"
+                );
             let userNameExists = await User.findOne({
                 _id: { $ne: req.user.id },
                 username: userUpdates.username
@@ -132,22 +167,37 @@ router.patch("/update", auth, async (req, res) => {
     }
 });
 
-router.patch("/update-password", auth, async (req, res) => {
-    let password = encryptIt(req.body.password);
-    try {
-        await User.update({ _id: req.user.id }, { password });
-        res.send();
-    } catch (e) {
-        res.error(
-            500,
-            "Something went wrong please refresh the page and try again",
-            e
-        );
+router.patch(
+    "/update-password",
+    auth,
+    [
+        body("password")
+            .trim()
+            .isLength({ min: 4 })
+            .withMessage("The password minimum length is 4 characters!")
+    ],
+    async (req, res) => {
+        try {
+            let errors = validationResult(req);
+            if (!errors.isEmpty()) return res.error(409, errors.array()[0].msg);
+
+            let password = encryptIt(req.body.password);
+            await User.update({ _id: req.user.id }, { password });
+            res.send();
+        } catch (e) {
+            res.error(
+                500,
+                "Something went wrong please refresh the page and try again",
+                e
+            );
+        }
     }
-});
+);
 
 router.patch("/avatar", upload.single("avatar"), auth, async (req, res) => {
     const file = req.file;
+    if (!file)
+        return res.error(409, "Upload an image before make the request!");
     if (file.size / 1000000 > 4)
         return res.error(
             409,
@@ -167,6 +217,62 @@ router.patch("/avatar", upload.single("avatar"), auth, async (req, res) => {
             { new: true }
         );
         res.send(user);
+    } catch (e) {
+        res.error(
+            500,
+            "Something went wrong please refresh the page and try again",
+            e
+        );
+    }
+});
+
+router.get("/user/:username", async (req, res) => {
+    let username = req.params.username;
+    let data = {};
+
+    try {
+        let user = await User.findOne(
+            { username, active: true },
+            { username: 1, location: 1, avatar: 1, createdAt: 1 }
+        );
+
+        if (!user)
+            return res.error(
+                409,
+                "Couldn't find the user you were looking for!"
+            );
+
+        let posts = await Post.find({ author: user._id }).limit(2);
+
+        data = {
+            user,
+            posts
+        };
+    } catch (e) {
+        res.error(
+            500,
+            "Something went wrong please refresh the page and try again",
+            e
+        );
+    } finally {
+        res.send(data);
+    }
+});
+
+router.get("/user/filter/:id/", async (req, res) => {
+    let userID = req.params.id,
+        skip = parseInt(req.query.skip) || 0,
+        sort =
+            req.query.sort === "likes" ? { likes: "-1" } : { createdAt: "-1" };
+
+    if (!ObjectID.isValid(userID))
+        return res.error(409, "Invalid data submitted!");
+    try {
+        let posts = await Post.find({ author: userID })
+            .sort(sort)
+            .skip(skip)
+            .limit(4);
+        res.send(posts);
     } catch (e) {
         res.error(
             500,

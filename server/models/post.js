@@ -38,6 +38,10 @@ const PostSchema = mongoose.Schema({
     albumLink: {
         type: String
     },
+    likes: {
+        type: Array,
+        default: []
+    },
     createdAt: {
         type: String,
         default: moment().valueOf()

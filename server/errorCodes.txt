@@ -2,6 +2,7 @@
 -------------DEFAULT ERRORS ----------------
 
 500 - Something went wrong please refresh the page and try again
+409 - Invalid data submitted! (OBJECTID)
 
 /////////////////////////////////////////////////////////
 -------------REGISTER - LOGIN - AUTHENTICATION ----------------
@@ -9,7 +10,10 @@
 --Register
 409 - The email you have chosen is invalid!
 409 - The email you have chosen is already in use!
+
 409 - The username you have chosen is already in use!
+409 - The username minimum length is 2 characters!
+
 
 --Activation
 400 - invalid-link
@@ -22,17 +26,19 @@
 401 - not-logged
 
 --avatar
+409 - Upload an image before make the request!
 409 - The avatar you have chosen exceeds the limit size!
 409 - The avatar you have chosen is invalid!
 
 /////////////////////////////////////////////////////////
 -------------SPOTIFY API ----------------
 
-204 - not-data-found No results found based on your search!
+409 - No results found based on your search!
 
 /////////////////////////////////////////////////////////
 ------------- POSTS REQUESTS ----------------
 
+--create / update
 409 - The title minimum length is 4 characters!
 409 - The title maximum length is 140 characters!
 409 - The title you have chosen is already in use!
@@ -42,3 +48,13 @@
 409 - The album name is missing!
 409 - The album link is missing!
 
+--remove
+409 - The post you tried to delete doesn't exists!
+
+--update
+409 - The post you are trying to update doesn't exists!
+409 - You can't change the album content after someone liking your content! 
+
+/////////////////////////////////////////////////////////
+------------- POSTS REQUESTS ----------------
+409 - Couldn't find the user you were looking for!
