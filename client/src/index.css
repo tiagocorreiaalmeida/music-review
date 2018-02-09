@@ -1,5 +1,19 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+/*------------------------------*/
+/*---------------UTILS----------*/
+.mg-right-small {
+    margin-right: 1rem;
+}
+
+.mg-left-small {
+    margin-left: 1rem;
+}
+
+.bg-light {
+    background-color: rgba(0, 0, 0, 0.5);
 }
