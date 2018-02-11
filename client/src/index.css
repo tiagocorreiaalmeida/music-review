@@ -17,3 +17,7 @@ body {
 .bg-light {
     background-color: rgba(0, 0, 0, 0.5);
 }
+
+.size-small {
+    max-width: 30rem;
+}

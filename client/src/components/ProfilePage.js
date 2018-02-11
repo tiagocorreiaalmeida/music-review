@@ -8,7 +8,8 @@ export default class ProfilePage extends React.Component {
                     <div className="hero-body">
                         <div className="container">
                             <h1 className="title">
-                                <i class="fas fa-id-card" /> Your identification
+                                <i className="fas fa-id-card" /> Your
+                                identification
                             </h1>
                             <h2 className="subtitle">
                                 Make changes to your information

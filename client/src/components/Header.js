@@ -1,28 +1,21 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 
 import LoginModal from "./LoginModal";
+import { updateNavbar } from "../actions/navbar";
+import { startLogout } from "../actions/auth";
 
-export default class Header extends React.Component {
-    state = {
-        burgerIsActive: false,
-        modalIsActive: false
+export class Header extends React.Component {
+    onBurgerClick = () =>
+        this.props.updateNavbar({ burgerIsActive: !this.props.burgerIsActive });
+
+    OnModalClick = () => {
+        this.props.updateNavbar({ modalIsActive: !this.props.modalIsActive });
+        this.onBurgerClick();
     };
 
-    onBurgerClick = () =>
-        this.setState(prevState => ({
-            burgerIsActive: !prevState.burgerIsActive
-        }));
-
-    OnModalClick = () =>
-        this.setState(() => ({
-            modalIsActive: true
-        }));
-
-    onModalClose = () =>
-        this.setState(() => ({
-            modalIsActive: false
-        }));
+    onLogoutClick = () => this.props.logout();
 
     render() {
         return (
@@ -34,7 +27,7 @@ export default class Header extends React.Component {
                                 <i className="fas fa-headphones" />
                             </NavLink>
                             <button
-                                className={`button navbar-burger ${this.state
+                                className={`button navbar-burger ${this.props
                                     .burgerIsActive && "is-active"}`}
                                 onClick={this.onBurgerClick}
                             >
@@ -44,53 +37,85 @@ export default class Header extends React.Component {
                             </button>
                         </div>
                         <div
-                            className={`navbar-menu ${this.state
+                            className={`navbar-menu ${this.props
                                 .burgerIsActive && "is-active"}`}
                         >
-                            <div className="navbar-end">
-                                <NavLink
-                                    to="/"
-                                    className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
-                                    activeClassName="navbar-item--active"
-                                >
-                                    Home
-                                </NavLink>
-                                <NavLink
-                                    to="/myposts"
-                                    className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
-                                    activeClassName="navbar-item--active"
-                                >
-                                    My posts
-                                </NavLink>
-                                <NavLink
-                                    to="/addpost"
-                                    className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
-                                    activeClassName="navbar-item--active"
-                                >
-                                    Create Post
-                                </NavLink>
-                                <NavLink
-                                    to="/profile"
-                                    className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
-                                    activeClassName="navbar-item--active"
-                                >
-                                    Profile
-                                </NavLink>
-                                <a
-                                    className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
-                                    onClick={this.OnModalClick}
-                                >
-                                    Login
-                                </a>
-                            </div>
+                            {this.props.isAuthenticated ? (
+                                <div className="navbar-end">
+                                    <NavLink
+                                        onClick={this.onBurgerClick}
+                                        to="/"
+                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                        activeClassName="navbar-item--active"
+                                    >
+                                        Home
+                                    </NavLink>
+                                    <NavLink
+                                        onClick={this.onBurgerClick}
+                                        to="/myposts"
+                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                        activeClassName="navbar-item--active"
+                                    >
+                                        My posts
+                                    </NavLink>
+                                    <NavLink
+                                        onClick={this.onBurgerClick}
+                                        to="/addpost"
+                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                        activeClassName="navbar-item--active"
+                                    >
+                                        Create Post
+                                    </NavLink>
+                                    <NavLink
+                                        onClick={this.onBurgerClick}
+                                        to="/profile"
+                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                        activeClassName="navbar-item--active"
+                                    >
+                                        Profile
+                                    </NavLink>
+                                    <a
+                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                        onClick={this.onLogoutClick}
+                                    >
+                                        Logout
+                                    </a>
+                                </div>
+                            ) : (
+                                <div className="navbar-end">
+                                    <NavLink
+                                        onClick={this.onBurgerClick}
+                                        to="/"
+                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                        activeClassName="navbar-item--active"
+                                    >
+                                        Home
+                                    </NavLink>
+                                    <a
+                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                        onClick={this.OnModalClick}
+                                    >
+                                        Login
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </nav>
-                <LoginModal
-                    onModalClose={this.onModalClose}
-                    modalIsActive={this.state.modalIsActive}
-                />
+                {!this.props.isAuthenticated && <LoginModal />}
             </div>
         );
     }
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: !!state.auth._id,
+    burgerIsActive: state.navbar.burgerIsActive
+});
+
+const dispatchToProps = dispatch => ({
+    updateNavbar: changes => dispatch(updateNavbar(changes)),
+    logout: () => dispatch(startLogout())
+});
+
+export default connect(mapStateToProps, dispatchToProps)(Header);
