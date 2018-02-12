@@ -1,13 +1,15 @@
 import React from "react";
 import axios from "axios";
+import { connect } from "react-redux";
+import { setMessages } from "../actions/messages";
+import { startAddPost } from "../actions/myPosts";
 
-export default class PostForm extends React.Component {
+export class PostForm extends React.Component {
     state = {
         search: "",
         title: "",
         review: "",
         artists: [],
-        error: "",
         albumName: "",
         albumLink: "",
         albumCover: "",
@@ -37,34 +39,39 @@ export default class PostForm extends React.Component {
         }));
         if (this.state.timer !== false) clearTimeout(this.state.timer);
         if (search !== "") {
-            this.state.timer = setTimeout(() => {
-                axios
-                    .get(`/api/spotify/${search}`)
-                    .then(response => {
-                        this.setState(() => ({
-                            searchResults: [...response.data]
-                        }));
-                    })
-                    .catch(e =>
-                        this.setState(() => ({
-                            searchError: e.response.data.error
-                        }))
-                    );
-                this.setState(() => ({ timer: false }));
-            }, 500);
+            this.setState(() => ({
+                timer: setTimeout(() => {
+                    axios
+                        .get(`/api/spotify/${search}`)
+                        .then(response => {
+                            this.setState(() => ({
+                                searchResults: [...response.data]
+                            }));
+                        })
+                        .catch(e =>
+                            this.setState(() => ({
+                                searchError: e.response.data.error
+                            }))
+                        );
+                    this.setState(() => ({ timer: false }));
+                }, 500)
+            }));
         } else {
             this.setState(() => ({ searchResults: [] }));
         }
     };
 
     onAlbumClick = albumPostion => {
-        let { name, link, cover, artists } = this.state.searchResults[
-            albumPostion
-        ];
+        let {
+            albumName,
+            albumLink,
+            albumCover,
+            artists
+        } = this.state.searchResults[albumPostion];
         this.setState(() => ({
-            albumName: name,
-            albumLink: link,
-            albumCover: cover,
+            albumName,
+            albumLink,
+            albumCover,
             artists: [...artists],
             searching: false
         }));
@@ -72,11 +79,37 @@ export default class PostForm extends React.Component {
 
     onSubmit = e => {
         e.preventDefault();
+        let error;
+
+        if (
+            !this.state.title.trim() ||
+            !this.state.review ||
+            !this.state.albumName
+        ) {
+            error = "Fill all the inputs before submit!";
+        } else if (this.state.title.trim().length < 3) {
+            error = "The title minimum length is 3 characters!";
+        } else if (this.state.review.trim().length < 100) {
+            error = "The review minimum length is 100 characters!";
+        }
+
+        if (error)
+            return this.props.setMessages({
+                successMessage: "",
+                errorMessage: error
+            });
 
         if (this.props.post) {
             //edit post
         } else {
-            //new post
+            this.props.addPost({
+                title: this.state.title,
+                review: this.state.review,
+                albumName: this.state.albumName,
+                albumLink: this.state.albumLink,
+                albumCover: this.state.albumCover,
+                artists: [...this.state.artists]
+            });
         }
     };
 
@@ -124,7 +157,7 @@ export default class PostForm extends React.Component {
                                                             alt="album thumbnail"
                                                             src={ele.thumbnail}
                                                         />{" "}
-                                                        {ele.name}
+                                                        {ele.albumName}
                                                     </a>
                                                 );
                                             }
@@ -196,6 +229,18 @@ export default class PostForm extends React.Component {
                                 />
                             </div>
                         </div>
+                        {this.props.errorMessage && (
+                            <p className="notification is-danger">
+                                {this.props.errorMessage}
+                            </p>
+                        )}
+
+                        {this.props.successMessage && (
+                            <p className="notification is-success">
+                                {this.props.successMessage}
+                            </p>
+                        )}
+
                         <button className="button is-primary is-size-5 has-text-weight-bold">
                             Create
                         </button>
@@ -205,3 +250,15 @@ export default class PostForm extends React.Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    errorMessage: state.messages.errorMessage,
+    successMessage: state.messages.successMessage
+});
+
+const mapDispatchToProps = dispatch => ({
+    setMessages: messages => dispatch(setMessages(messages)),
+    addPost: post => dispatch(startAddPost(post))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostForm);

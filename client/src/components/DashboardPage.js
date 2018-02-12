@@ -42,8 +42,10 @@ export default class DashboardPage extends React.Component {
                                                 </p>
                                             </Link>
                                             <p className="subtitle is-6 article-subtitle">
-                                                <a href="#">@dasdasdasd</a> on
-                                                October 7, 2017
+                                                <a href="/userpage">
+                                                    @dasdasdasd
+                                                </a>{" "}
+                                                on October 7, 2017
                                             </p>
                                             <img
                                                 src={testImg}
