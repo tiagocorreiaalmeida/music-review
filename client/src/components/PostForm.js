@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 export default class PostForm extends React.Component {
     state = {
@@ -6,8 +7,14 @@ export default class PostForm extends React.Component {
         title: "",
         review: "",
         artists: [],
+        error: "",
         albumName: "",
-        albumLink: ""
+        albumLink: "",
+        albumCover: "",
+        timer: false,
+        searching: false,
+        searchResults: [],
+        searchError: ""
     };
 
     onTitleChange = e => {
@@ -20,12 +27,57 @@ export default class PostForm extends React.Component {
         this.setState(() => ({ review }));
     };
 
-    onSubmit = e => {
-        e.preventDefault();
-    };
-
     onSearchChange = e => {
         let search = e.target.value;
+        this.setState(() => ({
+            search,
+            searching: true,
+            searchError: "",
+            searchResults: []
+        }));
+        if (this.state.timer !== false) clearTimeout(this.state.timer);
+        if (search !== "") {
+            this.state.timer = setTimeout(() => {
+                axios
+                    .get(`/api/spotify/${search}`)
+                    .then(response => {
+                        this.setState(() => ({
+                            searchResults: [...response.data]
+                        }));
+                    })
+                    .catch(e =>
+                        this.setState(() => ({
+                            searchError: e.response.data.error
+                        }))
+                    );
+                this.setState(() => ({ timer: false }));
+            }, 500);
+        } else {
+            this.setState(() => ({ searchResults: [] }));
+        }
+    };
+
+    onAlbumClick = albumPostion => {
+        let { name, link, cover, artists } = this.state.searchResults[
+            albumPostion
+        ];
+        this.setState(() => ({
+            albumName: name,
+            albumLink: link,
+            albumCover: cover,
+            artists: [...artists],
+            searching: false
+        }));
+    };
+
+    onSubmit = e => {
+        e.preventDefault();
+
+        if (this.props.post) {
+            //edit post
+        } else {
+            //new post
+        }
     };
 
     render() {
@@ -44,6 +96,41 @@ export default class PostForm extends React.Component {
                                     placeholder="Primary input"
                                     onChange={this.onSearchChange}
                                 />
+                                <div
+                                    className={
+                                        this.state.searching &&
+                                        this.state.searchResults.length > 0
+                                            ? "popover popover--active"
+                                            : "popover"
+                                    }
+                                >
+                                    {this.state.searchError ? (
+                                        <p className="popover__item is-size-5">
+                                            {this.state.searchError}
+                                        </p>
+                                    ) : (
+                                        this.state.searchResults.map(
+                                            (ele, i) => {
+                                                return (
+                                                    <a
+                                                        className="popover__item is-size-5"
+                                                        key={i}
+                                                        onClick={() =>
+                                                            this.onAlbumClick(i)
+                                                        }
+                                                    >
+                                                        <img
+                                                            className="popover__item__thumbnail"
+                                                            alt="album thumbnail"
+                                                            src={ele.thumbnail}
+                                                        />{" "}
+                                                        {ele.name}
+                                                    </a>
+                                                );
+                                            }
+                                        )
+                                    )}
+                                </div>
                             </div>
                         </div>
                         <div className="field">
@@ -77,7 +164,10 @@ export default class PostForm extends React.Component {
                                     className="input is-primary"
                                     type="text"
                                     placeholder="Primary input"
-                                    value={this.state.albumLink}
+                                    value={this.state.artists.reduce(
+                                        (a, b) => a + "," + b.name,
+                                        ""
+                                    )}
                                     disabled
                                 />
                             </div>
