@@ -7,28 +7,30 @@ export const addPost = post => ({
 });
 
 export const startAddPost = post => {
-    return dispatch => {
-        axios
-            .post("/api/post/", {
+    return async dispatch => {
+        try {
+            await axios.post("/api/post/", {
                 ...post
-            })
-            .then(response => {
-                dispatch(addPost(post));
-                dispatch(
-                    setMessages({
-                        errorMessage: "",
-                        successMessage: "Post created with success!"
-                    })
-                );
-                //timeout and redirect
-            })
-            .catch(e =>
-                dispatch(
-                    setMessages({
-                        errorMessage: e.response.data.error,
-                        successMessage: ""
-                    })
-                )
+            });
+            dispatch(addPost(post));
+            dispatch(
+                setMessages({
+                    errorMessage: "",
+                    successMessage: "Post created with success!"
+                })
             );
+        } catch (e) {
+            dispatch(
+                setMessages({
+                    errorMessage: e.response.data.error,
+                    successMessage: ""
+                })
+            );
+        }
     };
 };
+
+export const setPosts = posts => ({
+    type: "SET_POSTS",
+    posts
+});

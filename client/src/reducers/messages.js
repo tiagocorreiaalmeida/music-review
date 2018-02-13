@@ -10,6 +10,9 @@ export default (state = messagesDefaultState, action) => {
                 ...action.messages
             };
         }
+        case "SET_DEFAULT": {
+            return messagesDefaultState;
+        }
         default:
             return state;
     }

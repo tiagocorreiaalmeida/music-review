@@ -1,8 +1,17 @@
 import React from "react";
-import PostForm from "./PostForm";
+import { connect } from "react-redux";
 
-export default class AddPostPage extends React.Component {
-    onSubmit = e => {};
+import PostForm from "./PostForm";
+import { startAddPost } from "../actions/myPosts";
+import { setMessagesToDefault } from "../actions/messages";
+
+export class AddPostPage extends React.Component {
+    componentWillMount() {
+        this.props.setMessagesToDefault();
+    }
+    onSubmit = post => {
+        this.props.addPost(post);
+    };
     render() {
         return (
             <div className="container">
@@ -24,3 +33,10 @@ export default class AddPostPage extends React.Component {
         );
     }
 }
+
+const mapDispatchToProps = dispatch => ({
+    addPost: post => dispatch(startAddPost(post)),
+    setMessagesToDefault: () => dispatch(setMessagesToDefault())
+});
+
+export default connect(undefined, mapDispatchToProps)(AddPostPage);

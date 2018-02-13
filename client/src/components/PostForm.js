@@ -102,7 +102,7 @@ export class PostForm extends React.Component {
         if (this.props.post) {
             //edit post
         } else {
-            this.props.addPost({
+            this.props.onSubmit({
                 title: this.state.title,
                 review: this.state.review,
                 albumName: this.state.albumName,
@@ -131,8 +131,7 @@ export class PostForm extends React.Component {
                                 />
                                 <div
                                     className={
-                                        this.state.searching &&
-                                        this.state.searchResults.length > 0
+                                        this.state.searching
                                             ? "popover popover--active"
                                             : "popover"
                                     }
@@ -257,8 +256,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    setMessages: messages => dispatch(setMessages(messages)),
-    addPost: post => dispatch(startAddPost(post))
+    setMessages: messages => dispatch(setMessages(messages))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostForm);
