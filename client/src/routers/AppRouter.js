@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import ProfilePage from "../components/ProfilePage";
 import AddPostPage from "../components/AddPostPage";
 import MyPostsPage from "../components/MyPostsPage";
+import EditPostPage from "../components/EditPostPage";
 
 const AppRouter = () => (
     <BrowserRouter>
@@ -23,6 +24,7 @@ const AppRouter = () => (
                     component={AddPostPage}
                     exact={true}
                 />
+                <LoggedRouter path="/edit/:id" component={EditPostPage} />
                 <LoggedRouter
                     path="/profile"
                     component={ProfilePage}

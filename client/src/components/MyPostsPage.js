@@ -1,6 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 
-export default () => (
+import Posts from "./Posts";
+
+export const MyPostsPage = props => (
     <div className="container">
         <section className="hero is-danger is-bold is-small promo-block">
             <div className="hero-body">
@@ -15,5 +18,12 @@ export default () => (
                 </div>
             </div>
         </section>
+        <Posts posts={props.posts} author={true} />
     </div>
 );
+
+const mapStateToProps = state => ({
+    posts: state.myPosts
+});
+
+export default connect(mapStateToProps)(MyPostsPage);

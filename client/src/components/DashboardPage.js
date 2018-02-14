@@ -2,8 +2,6 @@ import React from "react";
 
 import Posts from "./Posts";
 
-//clean
-const posts = ["teste"];
 export default class DashboardPage extends React.Component {
     render() {
         return (
@@ -24,7 +22,6 @@ export default class DashboardPage extends React.Component {
                         </div>
                     </section>
                 </section>
-                <Posts posts={posts} />
             </div>
         );
     }

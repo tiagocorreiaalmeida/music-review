@@ -14,6 +14,14 @@ body {
     margin-left: 1rem;
 }
 
+.mg-top-small {
+    margin-top: 1rem;
+}
+
+.no-margin {
+    margin: 0;
+}
+
 .bg-light {
     background-color: rgba(0, 0, 0, 0.5);
 }
@@ -86,4 +94,9 @@ body {
     to {
         top: 42px;
     }
+}
+
+.review {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
