@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-//import moment fomart the data
+import moment from "moment";
 
 export class Post extends React.Component {
     render() {
@@ -31,9 +31,11 @@ export class Post extends React.Component {
                                 <p className="subtitle is-6 article-subtitle">
                                     <a href="/userpage">
                                         @{this.props.post.author}
-                                    </a>{" "}
-                                    on
-                                    {this.props.post.createdAt}
+                                    </a>
+                                    , on
+                                    {moment(
+                                        parseInt(this.props.post.createdAt)
+                                    ).format(" Do MMMM YYYY")}
                                 </p>
                                 <img
                                     src={this.props.post.albumCover}
@@ -55,7 +57,11 @@ export class Post extends React.Component {
                                 <i className="fas fa-thumbs-up mg-left-small" />
                             </button>
                             <Link
-                                to={this.props.author ? "edit" : "/"}
+                                to={
+                                    this.props.author
+                                        ? `/edit/${this.props.post._id}`
+                                        : "/"
+                                }
                                 className="button is-info is-size-5 has-text-weight-bold mg-left-small"
                             >
                                 <p>
@@ -69,7 +75,9 @@ export class Post extends React.Component {
                                     {this.props.author ? "Edit" : "See more"}
                                 </p>
                             </Link>
-                            {this.props.post.likes.includes() && (
+                            {this.props.post.likes.includes(
+                                this.props.userID
+                            ) && (
                                 <p className="has-text-grey mg-top-small">
                                     <i className="fas fa-check" /> You liked
                                     this post.

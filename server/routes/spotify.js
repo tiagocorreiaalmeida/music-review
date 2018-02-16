@@ -9,6 +9,8 @@ const router = express.Router(),
         clientSecret: process.env.SPOTIFY_KEY
     });
 
+//refreshToken missing returns 401 after few minutes using same token
+
 async function setSpotifyAccessToken() {
     try {
         let data = await spotifyApi.clientCredentialsGrant();
@@ -29,10 +31,10 @@ router.get(/(.+)/, auth, async (req, res) => {
         if (apiResponse.body.albums.items.length == 0)
             return res.error(409, "No results found based on your search!");
         let dataClean = apiResponse.body.albums.items.map(ele => ({
-            name: ele.name,
-            link: ele.external_urls.spotify,
+            albumName: ele.name,
+            albumLink: ele.external_urls.spotify,
             thumbnail: ele.images[2].url,
-            cover: ele.images[0].url,
+            albumCover: ele.images[0].url,
             artists: ele.artists.map(artist => ({
                 name: artist.name,
                 link: artist.external_urls.spotify

@@ -38,6 +38,9 @@ const PostSchema = mongoose.Schema({
     albumLink: {
         type: String
     },
+    albumCover: {
+        type: String
+    },
     likes: {
         type: Array,
         default: []

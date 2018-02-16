@@ -5,14 +5,11 @@ export default (state = [], action) => {
         case "SET_POSTS":
             return [...action.posts];
         case "EDIT_POST":
-            return state.myPosts.map(
-                post =>
-                    post.id !== action.id
-                        ? post
-                        : { ...post, ...action.updates }
+            return state.map(
+                post => (post._id !== action.id ? post : action.updates)
             );
         case "REMOVE_POST":
-            return state.myPosts.filter(post => post._id !== action.id);
+            return state.filter(post => post._id !== action.id);
         default:
             return state;
     }

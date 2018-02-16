@@ -18,9 +18,6 @@ const UserSchema = mongoose.Schema({
         unique: true,
         required: true
     },
-    location: {
-        type: String
-    },
     active: {
         type: Boolean,
         default: false

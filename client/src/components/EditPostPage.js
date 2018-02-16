@@ -10,17 +10,12 @@ export class EditPostPage extends React.Component {
         this.props.setMessagesToDefault();
     }
 
-    componentDidMount() {
-        console.log(this.props.post);
-    }
-
     onSubmit = post => {
         this.props.editPost(this.props.post._id, post);
     };
 
     onRemove = () => {
         this.props.removePost(this.props.post._id);
-        this.props.history.push("/myposts");
     };
 
     render() {
@@ -31,16 +26,19 @@ export class EditPostPage extends React.Component {
                         <div className="container">
                             <h1 className="title">
                                 <i className="fas fa-edit mg-right-small" />
-                                Create new post
+                                {`Editing ${this.props.post.title}`}
                             </h1>
                             <h2 className="subtitle">
-                                Share your opinion with the world
+                                Make all the changes needed
                             </h2>
                         </div>
                     </div>
                 </section>
-                <PostForm onSubmit={this.onSubmit} post={this.props.post} />
-                <button onClick={this.onRemove}>Delete</button>
+                <PostForm
+                    onSubmit={this.onSubmit}
+                    post={this.props.post}
+                    onRemove={this.onRemove}
+                />
             </div>
         );
     }

@@ -44,8 +44,8 @@ export const editPost = (id, updates) => ({
 export const startEditPost = (id, updates) => {
     return async dispatch => {
         try {
-            let post = await axios.patch(`/api/post/:${id}`, updates);
-            dispatch(editPost(post));
+            let post = await axios.patch(`/api/post/${id}`, updates);
+            dispatch(editPost(id, post.data));
             dispatch(
                 setMessages({
                     errorMessage: "",
@@ -73,6 +73,12 @@ export const startRemovePost = id => {
         try {
             await axios.delete(`/api/post/${id}`);
             dispatch(removePost(id));
+            dispatch(
+                setMessages({
+                    errorMessage: "",
+                    successMessage: "Post removed with success!"
+                })
+            );
         } catch (e) {
             dispatch(
                 setMessages({

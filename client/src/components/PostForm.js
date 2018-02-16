@@ -7,12 +7,12 @@ import { startAddPost } from "../actions/myPosts";
 export class PostForm extends React.Component {
     state = {
         search: "",
-        title: "",
-        review: "",
-        artists: [],
-        albumName: "",
-        albumLink: "",
-        albumCover: "",
+        title: this.props.post ? this.props.post.title : "",
+        review: this.props.post ? this.props.post.review : "",
+        artists: this.props.post ? this.props.post.artists : [],
+        albumName: this.props.post ? this.props.post.albumName : "",
+        albumLink: this.props.post ? this.props.post.albumLink : "",
+        albumCover: this.props.post ? this.props.post.albumCover : "",
         timer: false,
         searching: false,
         searchResults: [],
@@ -99,18 +99,14 @@ export class PostForm extends React.Component {
                 errorMessage: error
             });
 
-        if (this.props.post) {
-            //edit post
-        } else {
-            this.props.onSubmit({
-                title: this.state.title,
-                review: this.state.review,
-                albumName: this.state.albumName,
-                albumLink: this.state.albumLink,
-                albumCover: this.state.albumCover,
-                artists: [...this.state.artists]
-            });
-        }
+        this.props.onSubmit({
+            title: this.state.title,
+            review: this.state.review,
+            albumName: this.state.albumName,
+            albumLink: this.state.albumLink,
+            albumCover: this.state.albumCover,
+            artists: [...this.state.artists]
+        });
     };
 
     render() {
@@ -241,8 +237,16 @@ export class PostForm extends React.Component {
                         )}
 
                         <button className="button is-primary is-size-5 has-text-weight-bold">
-                            Create
+                            {this.props.post ? "Save changes" : "Create"}
                         </button>
+                        {this.props.onRemove && (
+                            <button
+                                className="button is-danger is-size-5 has-text-weight-bold"
+                                onClick={this.props.onRemove}
+                            >
+                                Delete
+                            </button>
+                        )}
                     </form>
                 </div>
             </div>

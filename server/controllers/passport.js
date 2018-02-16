@@ -2,6 +2,7 @@ import local from "passport-local";
 import bcrypt from "bcrypt";
 
 import User from "../models/user";
+import Post from "../models/post";
 
 const LocalStrategy = local.Strategy;
 
@@ -14,13 +15,17 @@ export default passport => {
             },
             async (username, password, done) => {
                 try {
-                    const user = await User.findOne({ email: username });
+                    let user = await User.findOne({ email: username });
                     if (
                         user &&
                         bcrypt.compareSync(password, user.password) &&
                         user.active
                     ) {
-                        done(null, user);
+                        let posts = await Post.find({ author: user._id }).limit(
+                            4
+                        );
+
+                        done(null, { user, posts });
                     } else if (user && !user.active) {
                         done(null, "inactive");
                     } else {

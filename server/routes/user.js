@@ -106,8 +106,11 @@ router.post("/login", (req, res, next) => {
         if (!user || err) return res.error(401, "Your login failed!");
         if (user === "inactive")
             return res.error(409, "Please activate your account before!");
-        req.logIn(user, e => {
+        req.logIn(user.user, e => {
             if (err) return res.error(401, "Your login failed!");
+            delete user.user.password;
+            delete user.user.active;
+            delete user.user.activatekey;
             res.send(user);
         });
     })(req, res, next);
