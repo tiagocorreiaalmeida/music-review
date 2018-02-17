@@ -3,7 +3,13 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import moment from "moment";
 
+import { startLikePost } from "../actions/myPosts";
+
 export class Post extends React.Component {
+    onLikeClick = () => {
+        this.props.like(this.props.post._id);
+    };
+
     render() {
         return (
             <div className={`column ${this.props.author ? "is-4" : "is-6"}`}>
@@ -30,11 +36,11 @@ export class Post extends React.Component {
                                 </Link>
                                 <p className="subtitle is-6 article-subtitle">
                                     <a href="/userpage">
-                                        @{this.props.post.author}
+                                        @{this.props.post.author.username}
                                     </a>
                                     , on
                                     {moment(
-                                        parseInt(this.props.post.createdAt)
+                                        Number(this.props.post.createdAt)
                                     ).format(" Do MMMM YYYY")}
                                 </p>
                                 <img
@@ -52,7 +58,10 @@ export class Post extends React.Component {
                                       "..."
                                     : this.props.post.review}
                             </p>
-                            <button className="button is-primary is-size-5 has-text-weight-bold">
+                            <button
+                                className="button is-primary is-size-5 has-text-weight-bold"
+                                onClick={this.onLikeClick}
+                            >
                                 {this.props.post.likes.length}
                                 <i className="fas fa-thumbs-up mg-left-small" />
                             </button>
@@ -92,7 +101,12 @@ export class Post extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    userID: state.auth._id
+    userID: state.auth._id,
+    errorMessage: state.messages.errorMessage
 });
 
-export default connect(mapStateToProps)(Post);
+const mapDispatchToProps = dispatch => ({
+    like: id => dispatch(startLikePost(id))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

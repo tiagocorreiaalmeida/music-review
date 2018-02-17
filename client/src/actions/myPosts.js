@@ -89,3 +89,25 @@ export const startRemovePost = id => {
         }
     };
 };
+
+export const setLikes = (id, likes) => ({
+    type: "SET_LIKES",
+    id,
+    likes
+});
+
+export const startLikePost = id => {
+    return async dispatch => {
+        try {
+            let response = await axios.patch(`/api/post/like/${id}`);
+            dispatch(setLikes(id, response.data));
+        } catch (e) {
+            dispatch(
+                setMessages({
+                    errorMessage: e.response.data.error,
+                    successMessage: ""
+                })
+            );
+        }
+    };
+};

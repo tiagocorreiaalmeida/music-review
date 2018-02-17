@@ -1,20 +1,25 @@
+import axios from "axios";
+
 import { updateNavbar } from "./navbar";
 import { setPosts } from "./myPosts";
 
-export const login = userData => ({
+export const login = user => ({
     type: "login",
-    userData
+    user
 });
 
 export const logout = () => ({
     type: "logout"
 });
 
-export const startLogin = userData => {
-    return dispatch => {
-        dispatch(login(userData.user));
-        dispatch(setPosts(userData.posts));
-        sessionStorage.setItem("auth", userData.user);
+export const startLogin = user => {
+    return async dispatch => {
+        dispatch(login(user));
+        console.log(typeof user);
+        sessionStorage.setItem("auth", JSON.stringify(user));
+        let posts = await axios.get(`/api/user/posts/${user.username}`);
+        dispatch(setPosts(posts.data));
+        sessionStorage.setItem("auth", user);
     };
 };
 
@@ -29,5 +34,14 @@ export const startLogout = () => {
             })
         );
         sessionStorage.clear();
+    };
+};
+
+export const logBack = () => {
+    return dispatch => {
+        let user = sessionStorage.getItem("auth");
+        if (user) {
+            //start log back
+        }
     };
 };

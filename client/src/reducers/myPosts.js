@@ -10,6 +10,13 @@ export default (state = [], action) => {
             );
         case "REMOVE_POST":
             return state.filter(post => post._id !== action.id);
+        case "SET_LIKES":
+            return state.map(
+                post =>
+                    post._id !== action.id
+                        ? post
+                        : { ...post, likes: action.likes }
+            );
         default:
             return state;
     }

@@ -16,6 +16,7 @@ export class EditPostPage extends React.Component {
 
     onRemove = () => {
         this.props.removePost(this.props.post._id);
+        this.props.history.push("/myposts");
     };
 
     render() {
