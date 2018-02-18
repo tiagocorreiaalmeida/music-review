@@ -3,20 +3,27 @@ import SpotifyWebApi from "spotify-web-api-node";
 
 import auth from "../utils/auth";
 
+let triesCount = 0;
+
 const router = express.Router(),
     spotifyApi = new SpotifyWebApi({
         clientId: process.env.SPOTIFY_ID,
         clientSecret: process.env.SPOTIFY_KEY
     });
 
-//refreshToken missing returns 401 after few minutes using same token
-
 async function setSpotifyAccessToken() {
     try {
         let data = await spotifyApi.clientCredentialsGrant();
         spotifyApi.setAccessToken(data.body["access_token"]);
+        spotifyApi.setRefreshToken(data.body["refresh_token"]);
+        triesCount = 0;
     } catch (e) {
-        console.log(e);
+        if (triesCount < 3) {
+            spotifyApi.refreshAccessToken();
+            return setSpotifyAccessToken();
+        } else {
+            console.log(e);
+        }
     }
 }
 
