@@ -4,6 +4,7 @@ import { body, validationResult } from "express-validator/check";
 
 import auth from "../utils/auth";
 import Post from "../models/post";
+import User from "../models/user";
 
 const router = express.Router(),
     { ObjectID } = mongo;
@@ -30,7 +31,7 @@ router.post(
             .withMessage("The album link is missing!")
     ],
     async (req, res) => {
-        let savedPost;
+        let newPost;
         try {
             let errors = validationResult(req);
             if (!errors.isEmpty()) return res.error(409, errors.array()[0].msg);
@@ -47,7 +48,11 @@ router.post(
                     "The title you have chosen is already in use!"
                 );
 
-            savedPost = await Post.create(post);
+            await Post.create(post);
+            newPost = await Post.findOne({ title: post.title }).populate(
+                "author",
+                "username"
+            );
         } catch (e) {
             res.error(
                 500,
@@ -55,7 +60,7 @@ router.post(
                 e
             );
         } finally {
-            res.send(savedPost);
+            res.send(newPost);
         }
     }
 );
@@ -161,7 +166,7 @@ router.patch("/:id", auth, async (req, res) => {
 
         post = await Post.findByIdAndUpdate(postID, postUpdates, {
             new: true
-        });
+        }).populate("author", "username");
     } catch (e) {
         res.error(
             500,
@@ -170,6 +175,58 @@ router.patch("/:id", auth, async (req, res) => {
         );
     } finally {
         res.send(post);
+    }
+});
+
+router.patch("/like/:id", auth, async (req, res) => {
+    let postID = req.params.id;
+    if (!ObjectID.isValid(postID))
+        return res.error(409, "Invalid data submitted!");
+    let updatedPost;
+    try {
+        let post = await Post.findById(postID);
+        if (!post)
+            return res.error(
+                409,
+                "The post you are trying to like doesn't exist!"
+            );
+        let updates;
+        if (!post.likes.includes(req.user.id)) {
+            updates = { $push: { likes: req.user.id } };
+        } else {
+            updates = { $pull: { likes: req.user.id } };
+        }
+        updatedPost = await Post.findByIdAndUpdate(postID, updates, {
+            new: true
+        });
+    } catch (e) {
+        res.error(
+            500,
+            "Something went wrong please refresh the page and try again",
+            e
+        );
+    } finally {
+        res.send(updatedPost.likes);
+    }
+});
+
+router.get("/", async (req, res) => {
+    let skip = parseInt(req.query.skip) || 0,
+        sort =
+            req.query.sort === "likes" ? { likes: "-1" } : { createdAt: "-1" };
+    try {
+        let posts = await Post.find()
+            .sort(sort)
+            .skip(skip)
+            .limit(4)
+            .populate("author", "username");
+        res.send(posts);
+    } catch (e) {
+        res.error(
+            500,
+            "Something went wrong please refresh the page and try again",
+            e
+        );
     }
 });
 

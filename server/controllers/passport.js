@@ -2,7 +2,6 @@ import local from "passport-local";
 import bcrypt from "bcrypt";
 
 import User from "../models/user";
-import Post from "../models/post";
 
 const LocalStrategy = local.Strategy;
 
@@ -21,11 +20,7 @@ export default passport => {
                         bcrypt.compareSync(password, user.password) &&
                         user.active
                     ) {
-                        let posts = await Post.find({ author: user._id }).limit(
-                            4
-                        );
-
-                        done(null, { user, posts });
+                        done(null, user);
                     } else if (user && !user.active) {
                         done(null, "inactive");
                     } else {
@@ -40,7 +35,7 @@ export default passport => {
 
     passport.serializeUser((user, cb) => cb(null, user._id));
     passport.deserializeUser(async (id, done) => {
-        const user = await User.findById(id, { _id: 1 });
+        const user = await User.findById(id, { _id: 1, username: 1 });
         done(null, user);
     });
 };

@@ -106,11 +106,11 @@ router.post("/login", (req, res, next) => {
         if (!user || err) return res.error(401, "Your login failed!");
         if (user === "inactive")
             return res.error(409, "Please activate your account before!");
-        req.logIn(user.user, e => {
+        req.logIn(user, e => {
             if (err) return res.error(401, "Your login failed!");
-            delete user.user.password;
-            delete user.user.active;
-            delete user.user.activatekey;
+            delete user.password;
+            delete user.active;
+            delete user.activatekey;
             res.send(user);
         });
     })(req, res, next);
@@ -201,10 +201,10 @@ router.patch("/avatar", upload.single("avatar"), auth, async (req, res) => {
     const file = req.file;
     if (!file)
         return res.error(409, "Upload an image before make the request!");
-    if (file.size / 1000000 > 4)
+    if (file.size / 1000000 > 2)
         return res.error(
             409,
-            "The avatar you have chosen exceeds the limit size!"
+            "The avatar you have chosen exceeds the limit(2mb) size!"
         );
     if (
         file.mimetype.split("/")[1] !== "png" &&
@@ -229,12 +229,12 @@ router.patch("/avatar", upload.single("avatar"), auth, async (req, res) => {
     }
 });
 
-router.get("/user/:username", async (req, res) => {
+router.get("/info/:username", async (req, res) => {
     let username = req.params.username;
-    let data = {};
+    let user;
 
     try {
-        let user = await User.findOne(
+        user = await User.findOne(
             { username, active: true },
             { username: 1, location: 1, avatar: 1, createdAt: 1 }
         );
@@ -244,37 +244,33 @@ router.get("/user/:username", async (req, res) => {
                 409,
                 "Couldn't find the user you were looking for!"
             );
-
-        let posts = await Post.find({ author: user._id }).limit(2);
-
-        data = {
-            user,
-            posts
-        };
+        res.send(user);
     } catch (e) {
         res.error(
             500,
             "Something went wrong please refresh the page and try again",
             e
         );
-    } finally {
-        res.send(data);
     }
 });
 
-router.get("/user/filter/:id/", async (req, res) => {
-    let userID = req.params.id,
+router.get("/posts/:username", async (req, res) => {
+    let username = req.params.username,
         skip = parseInt(req.query.skip) || 0,
         sort =
             req.query.sort === "likes" ? { likes: "-1" } : { createdAt: "-1" };
-
-    if (!ObjectID.isValid(userID))
-        return res.error(409, "Invalid data submitted!");
     try {
-        let posts = await Post.find({ author: userID })
+        let user = await User.findOne({ username });
+        if (!user)
+            return res.error(
+                409,
+                "User not found, please verifiy your request"
+            );
+        let posts = await Post.find({ author: user._id })
             .sort(sort)
             .skip(skip)
-            .limit(4);
+            .limit(4)
+            .populate("author", "username");
         res.send(posts);
     } catch (e) {
         res.error(

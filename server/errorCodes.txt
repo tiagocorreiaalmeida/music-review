@@ -23,7 +23,7 @@
 409 - Please activate your account before!
 
 --auth 
-401 - not-logged
+401 - Login in order to make changes!
 
 --avatar
 409 - Upload an image before make the request!
@@ -54,6 +54,9 @@
 --update
 409 - The post you are trying to update doesn't exists!
 409 - You can't change the album content after someone liking your content! 
+
+--like
+409 - The post you are trying to like doesn't exist!
 
 /////////////////////////////////////////////////////////
 ------------- POSTS REQUESTS ----------------
