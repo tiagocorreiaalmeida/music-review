@@ -2,7 +2,7 @@ export default (state = [], action) => {
     switch (action.type) {
         case "ADD_POST":
             return [...state, action.post];
-        case "SET_POSTS":
+        case "SET_MY_POSTS":
             return [...action.posts];
         case "EDIT_POST":
             return state.map(

@@ -4,10 +4,15 @@ import { connect } from "react-redux";
 import moment from "moment";
 
 import { startLikePost } from "../actions/myPosts";
+import { startLikeOtherPost } from "../actions/posts";
 
 export class Post extends React.Component {
     onLikeClick = () => {
-        this.props.like(this.props.post._id);
+        if (!this.props.author) {
+            this.props.likeOther(this.props.post._id);
+        } else {
+            this.props.like(this.props.post._id);
+        }
     };
 
     render() {
@@ -106,7 +111,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    like: id => dispatch(startLikePost(id))
+    like: id => dispatch(startLikePost(id)),
+    likeOther: id => dispatch(startLikeOtherPost(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);

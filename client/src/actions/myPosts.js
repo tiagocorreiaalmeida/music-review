@@ -1,5 +1,7 @@
 import axios from "axios";
+
 import { setMessages } from "./messages";
+import { setLikesOtherPost } from "./posts";
 
 export const addPost = post => ({
     type: "ADD_POST",
@@ -9,10 +11,10 @@ export const addPost = post => ({
 export const startAddPost = post => {
     return async dispatch => {
         try {
-            let response = await axios.post("/api/post/", {
+            let { data: newPost } = await axios.post("/api/post/", {
                 ...post
             });
-            dispatch(addPost(response.data));
+            dispatch(addPost(newPost));
             dispatch(
                 setMessages({
                     errorMessage: "",
@@ -31,7 +33,7 @@ export const startAddPost = post => {
 };
 
 export const setPosts = posts => ({
-    type: "SET_POSTS",
+    type: "SET_MY_POSTS",
     posts
 });
 
@@ -44,8 +46,11 @@ export const editPost = (id, updates) => ({
 export const startEditPost = (id, updates) => {
     return async dispatch => {
         try {
-            let post = await axios.patch(`/api/post/${id}`, updates);
-            dispatch(editPost(id, post.data));
+            let { data: newPost } = await axios.patch(
+                `/api/post/${id}`,
+                updates
+            );
+            dispatch(editPost(id, newPost));
             dispatch(
                 setMessages({
                     errorMessage: "",
@@ -99,8 +104,9 @@ export const setLikes = (id, likes) => ({
 export const startLikePost = id => {
     return async dispatch => {
         try {
-            let response = await axios.patch(`/api/post/like/${id}`);
-            dispatch(setLikes(id, response.data));
+            let { data: likes } = await axios.patch(`/api/post/like/${id}`);
+            dispatch(setLikes(id, likes));
+            dispatch(setLikesOtherPost(id, likes));
         } catch (e) {
             dispatch(
                 setMessages({

@@ -15,11 +15,9 @@ export const logout = () => ({
 export const startLogin = user => {
     return async dispatch => {
         dispatch(login(user));
-        console.log(typeof user);
         sessionStorage.setItem("auth", JSON.stringify(user));
         let posts = await axios.get(`/api/user/posts/${user.username}`);
         dispatch(setPosts(posts.data));
-        sessionStorage.setItem("auth", user);
     };
 };
 
@@ -39,9 +37,7 @@ export const startLogout = () => {
 
 export const logBack = () => {
     return dispatch => {
-        let user = sessionStorage.getItem("auth");
-        if (user) {
-            //start log back
-        }
+        let user = JSON.parse(sessionStorage.getItem("auth"));
+        if (user) return dispatch(startLogin(user));
     };
 };
