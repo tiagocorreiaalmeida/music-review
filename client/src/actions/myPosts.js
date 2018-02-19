@@ -1,7 +1,12 @@
 import axios from "axios";
 
 import { setMessages } from "./messages";
-import { setLikesOtherPost } from "./posts";
+import {
+    setLikesOtherPost,
+    setRecent,
+    editSinglePost,
+    removeSinglePost
+} from "./posts";
 
 export const addPost = post => ({
     type: "ADD_POST",
@@ -15,6 +20,7 @@ export const startAddPost = post => {
                 ...post
             });
             dispatch(addPost(newPost));
+            dispatch(setRecent(newPost));
             dispatch(
                 setMessages({
                     errorMessage: "",
@@ -51,6 +57,7 @@ export const startEditPost = (id, updates) => {
                 updates
             );
             dispatch(editPost(id, newPost));
+            dispatch(editSinglePost(id, newPost));
             dispatch(
                 setMessages({
                     errorMessage: "",
@@ -78,6 +85,7 @@ export const startRemovePost = id => {
         try {
             await axios.delete(`/api/post/${id}`);
             dispatch(removePost(id));
+            dispatch(removeSinglePost(id));
             dispatch(
                 setMessages({
                     errorMessage: "",

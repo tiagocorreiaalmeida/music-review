@@ -1,7 +1,9 @@
 const postsDefaultState = {
     latestPosts: [],
     mostRatedPosts: [],
-    requested: false
+    requested: false,
+    mostRatedPostsInfo: "",
+    latestPostsInfo: ""
 };
 export default (state = postsDefaultState, action) => {
     switch (action.type) {
@@ -36,6 +38,47 @@ export default (state = postsDefaultState, action) => {
                             ? post
                             : { ...post, likes: action.likes }
                 )
+            };
+        case "EDIT_SINGLE_POST":
+            return {
+                ...state,
+                mostRatedPosts: state.mostRatedPosts.map(
+                    post =>
+                        post._id !== action.id
+                            ? post
+                            : { ...post, ...action.post }
+                ),
+                latestPosts: state.mostRatedPosts.map(
+                    post =>
+                        post._id !== action.id
+                            ? post
+                            : { ...post, ...action.post }
+                )
+            };
+        case "REMOVE_SINGLE_POST":
+            return {
+                ...state,
+                mostRatedPosts: state.mostRatedPosts.filter(
+                    post => post._id !== action.id
+                ),
+                latestPosts: state.latestPosts.filter(
+                    post => post._id !== action.id
+                )
+            };
+        case "SET_RECENT":
+            return {
+                ...state,
+                latestPosts: [action.post, ...state.latestPosts]
+            };
+        case "SET_MOST_RATED_POSTS_INFO":
+            return {
+                ...state,
+                mostRatedPostsInfo: action.info
+            };
+        case "SET_LATEST_POSTS_INFO":
+            return {
+                ...state,
+                latestPostsInfo: action.info
             };
         default:
             return state;

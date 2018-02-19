@@ -1,7 +1,6 @@
 const messagesDefaultState = {
     errorMessage: "",
-    successMessage: "",
-    infoMessage: ""
+    successMessage: ""
 };
 export default (state = messagesDefaultState, action) => {
     switch (action.type) {

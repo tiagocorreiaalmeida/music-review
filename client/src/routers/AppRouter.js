@@ -9,6 +9,7 @@ import ProfilePage from "../components/ProfilePage";
 import AddPostPage from "../components/AddPostPage";
 import MyPostsPage from "../components/MyPostsPage";
 import EditPostPage from "../components/EditPostPage";
+import Footer from "../components/Footer";
 
 import { logBack } from "../actions/auth";
 
@@ -47,6 +48,7 @@ class AppRouter extends React.Component {
                             exact={true}
                         />
                     </Switch>
+                    <Footer />
                 </div>
             </BrowserRouter>
         );

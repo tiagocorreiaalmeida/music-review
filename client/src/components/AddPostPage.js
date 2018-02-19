@@ -6,12 +6,30 @@ import { startAddPost } from "../actions/myPosts";
 import { setMessagesToDefault } from "../actions/messages";
 
 export class AddPostPage extends React.Component {
+    state = {
+        timer: false
+    };
     componentWillMount() {
         this.props.setMessagesToDefault();
     }
-    onSubmit = post => {
-        this.props.addPost(post);
-    };
+
+    componentWillUnmount() {
+        if (this.state.timer !== false) clearTimeout(this.state.timer);
+    }
+
+    onSubmit = post =>
+        this.props.addPost(post).then(() =>
+            setTimeout(() => {
+                if (!this.props.errorMessage)
+                    this.setState(() => ({
+                        timer: setTimeout(
+                            () => this.props.history.push("/myposts"),
+                            3000
+                        )
+                    }));
+            })
+        );
+
     render() {
         return (
             <div className="container">
@@ -34,9 +52,13 @@ export class AddPostPage extends React.Component {
     }
 }
 
+const mapStateToProps = dispatch => ({
+    errorMessage: state.messages.errorMessage
+});
+
 const mapDispatchToProps = dispatch => ({
     addPost: post => dispatch(startAddPost(post)),
     setMessagesToDefault: () => dispatch(setMessagesToDefault())
 });
 
-export default connect(undefined, mapDispatchToProps)(AddPostPage);
+export default connect(mapStateToProps, mapDispatchToProps)(AddPostPage);

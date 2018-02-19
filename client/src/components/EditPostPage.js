@@ -6,13 +6,30 @@ import { startEditPost, startRemovePost } from "../actions/myPosts";
 import { setMessagesToDefault } from "../actions/messages";
 
 export class EditPostPage extends React.Component {
+    state = {
+        timer: false
+    };
+
     componentWillMount() {
         this.props.setMessagesToDefault();
     }
 
-    onSubmit = post => {
-        this.props.editPost(this.props.post._id, post);
-    };
+    componentWillUnmount() {
+        if (this.state.timer !== false) clearTimeout(this.state.timer);
+    }
+
+    onSubmit = post =>
+        this.props.editPost(this.props.post._id, post).then(() =>
+            setTimeout(() => {
+                if (!this.props.errorMessage)
+                    this.setState(() => ({
+                        timer: setTimeout(
+                            () => this.props.history.push("/myposts"),
+                            3000
+                        )
+                    }));
+            })
+        );
 
     onRemove = () => {
         this.props.removePost(this.props.post._id);
@@ -46,7 +63,8 @@ export class EditPostPage extends React.Component {
 }
 
 const mapStateToProps = (state, props) => ({
-    post: state.myPosts.find(post => post._id === props.match.params.id)
+    post: state.myPosts.find(post => post._id === props.match.params.id),
+    errorMessage: state.messages.errorMessage
 });
 
 const mapDispatchToProps = dispatch => ({

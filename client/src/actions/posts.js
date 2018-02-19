@@ -33,20 +33,32 @@ export const appendLatestPosts = posts => ({
     posts
 });
 
+export const setLatestPostsInfo = info => ({
+    type: "SET_LATEST_POSTS_INFO",
+    info
+});
+
+export const setMostRatedPostsInfo = info => ({
+    type: "SET_MOST_RATED_POSTS_INFO",
+    info
+});
+
+const displayInfo = (dispatch, type) => {
+    if (type === "latest") {
+        dispatch(setLatestPostsInfo("All existent posts are displayed!"));
+    } else {
+        dispatch(setMostRatedPostsInfo("All existent posts are displayed!"));
+    }
+};
+
 export const startAppendLatestPosts = skip => {
     return async dispatch => {
         try {
-            let { data: posts } = await axios.get(
-                `/api/post/?skip=${skip}&sort=likes`
-            );
-            if (posts.length === 0)
-                return dispatch(
-                    setMessages({
-                        errorMessage: "",
-                        successMessage: "",
-                        infoMessage: "No more posts to show!"
-                    })
-                );
+            let { data: posts } = await axios.get(`/api/post/?skip=${skip}`);
+
+            if (posts.length === 0) return displayInfo(dispatch, "latest");
+            if (posts.length < 4) displayInfo(dispatch, "latest");
+
             dispatch(appendLatestPosts(posts));
         } catch (e) {
             dispatch(
@@ -67,16 +79,13 @@ export const appendMostRatedPosts = posts => ({
 export const startAppendMostRatedPosts = skip => {
     return async dispatch => {
         try {
-            let { data: posts } = await axios.get(`/api/post/?skip=${skip}`);
+            let { data: posts } = await axios.get(
+                `/api/post/?skip=${skip}&sort=likes`
+            );
 
-            if (posts.length === 0)
-                return dispatch(
-                    setMessages({
-                        errorMessage: "",
-                        successMessage: "",
-                        infoMessage: "No more posts to show!"
-                    })
-                );
+            if (posts.length === 0) return displayInfo(dispatch, "rated");
+            if (posts.length < 4) displayInfo(dispatch, "rated");
+
             dispatch(appendMostRatedPosts(posts));
         } catch (e) {
             dispatch(
@@ -111,3 +120,20 @@ export const startLikeOtherPost = (id, likes) => {
         }
     };
 };
+
+export const setRecent = post => ({
+    type: "SET_RECENT",
+    post
+});
+
+export const editSinglePost = (id, post) => ({
+    type: "EDIT_SINGLE_POST",
+    id,
+    post
+});
+
+export const removeSinglePost = (id, post) => ({
+    type: "REMOVE_SINGLE_POST",
+    id,
+    post
+});

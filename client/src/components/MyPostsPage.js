@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import Posts from "./Posts";
 
 export class MyPostsPage extends React.Component {
+    state = {
+        loading: false
+    };
     render() {
         return (
             <div className="container">
@@ -21,6 +24,13 @@ export class MyPostsPage extends React.Component {
                     </div>
                 </section>
                 <Posts posts={this.props.posts} author={true} />
+                {this.state.loading && (
+                    <div className="spinner">
+                        <div className="bounce1" />
+                        <div className="bounce2" />
+                        <div className="bounce3" />
+                    </div>
+                )}
             </div>
         );
     }

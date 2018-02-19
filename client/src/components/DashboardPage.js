@@ -2,12 +2,32 @@ import React from "react";
 import { connect } from "react-redux";
 
 import Posts from "./Posts";
-import { startSetPosts } from "../actions/posts";
+import {
+    startSetPosts,
+    startAppendLatestPosts,
+    startAppendMostRatedPosts
+} from "../actions/posts";
 
 export class DashboardPage extends React.Component {
     state = {
-        latest: true
+        latest: true,
+        loading: false
     };
+
+    componentWillMount() {
+        if (!this.props.requested) {
+            this.setState(
+                () => ({
+                    loading: true
+                }),
+                () => {
+                    this.props
+                        .setPosts()
+                        .then(() => this.setState(() => ({ loading: false })));
+                }
+            );
+        }
+    }
 
     onMostRatedClick = () =>
         this.setState(() => ({
@@ -16,11 +36,14 @@ export class DashboardPage extends React.Component {
 
     onLatestClick = () => this.setState(() => ({ latest: true }));
 
-    componentWillMount() {
-        if (!this.props.requested) {
-            this.props.setPosts();
+    onLoadMoreClick = () => {
+        if (this.state.latest) {
+            this.props.appendLatestPosts(this.props.latestPosts.length);
+        } else {
+            this.props.appendMostRatedPosts(this.props.mostRatedPosts.length);
         }
-    }
+    };
+
     render() {
         return (
             <div className="container">
@@ -73,6 +96,49 @@ export class DashboardPage extends React.Component {
                             : this.props.mostRatedPosts
                     }
                 />
+                {this.state.loading && (
+                    <div className="spinner">
+                        <div className="bounce1" />
+                        <div className="bounce2" />
+                        <div className="bounce3" />
+                    </div>
+                )}
+                {this.state.latest &&
+                    !this.props.latestInfoMessage && (
+                        <div className="has-text-centered">
+                            <button
+                                className="button is-info is-rounded is-medium"
+                                onClick={this.onLoadMoreClick}
+                            >
+                                Load more
+                            </button>
+                        </div>
+                    )}
+                {this.props.latestInfoMessage &&
+                    this.state.latest && (
+                        <div className="notification is-info">
+                            {this.props.latestInfoMessage}
+                        </div>
+                    )}
+
+                {!this.state.latest &&
+                    !this.props.mostRatedInfoMessage && (
+                        <div className="has-text-centered">
+                            <button
+                                className="button is-info is-rounded is-medium"
+                                onClick={this.onLoadMoreClick}
+                            >
+                                Load more
+                            </button>
+                        </div>
+                    )}
+
+                {this.props.mostRatedInfoMessage &&
+                    !this.state.latest && (
+                        <div className="notification is-info">
+                            {this.props.mostRatedInfoMessage}
+                        </div>
+                    )}
             </div>
         );
     }
@@ -81,11 +147,15 @@ export class DashboardPage extends React.Component {
 const mapStatToProps = state => ({
     latestPosts: state.posts.latestPosts,
     mostRatedPosts: state.posts.mostRatedPosts,
-    requested: state.posts.requested
+    requested: state.posts.requested,
+    latestInfoMessage: state.posts.latestPostsInfo,
+    mostRatedInfoMessage: state.posts.mostRatedPostsInfo
 });
 
 const mapDispatchToProps = dispatch => ({
-    setPosts: () => dispatch(startSetPosts())
+    setPosts: () => dispatch(startSetPosts()),
+    appendLatestPosts: skip => dispatch(startAppendLatestPosts(skip)),
+    appendMostRatedPosts: skip => dispatch(startAppendMostRatedPosts(skip))
 });
 
 export default connect(mapStatToProps, mapDispatchToProps)(DashboardPage);
