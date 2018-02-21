@@ -212,8 +212,10 @@ router.patch("/like/:id", auth, async (req, res) => {
 
 router.get("/", async (req, res) => {
     let skip = parseInt(req.query.skip) || 0,
+        userID = req.query.userid,
         sort =
             req.query.sort === "likes" ? { likes: "-1" } : { createdAt: "-1" };
+    let searchQuery = { author: userID || "" };
     try {
         let posts = await Post.find()
             .sort(sort)

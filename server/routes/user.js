@@ -6,6 +6,7 @@ import multer from "multer";
 import mongo from "mongodb";
 import { body, validationResult } from "express-validator/check";
 
+import { smtpTransport, mailOptions } from "../controllers/nodeMailer";
 import User from "../models/user";
 import Post from "../models/post";
 import auth from "../utils/auth";
@@ -67,7 +68,16 @@ router.post(
                 activateKey
             });
 
-            //send email with activation link
+            let link = `${req.protocol}://${req.get(
+                "host"
+            )}/user/activate/${activateKey}`;
+
+            smtpTransport.sendMail(
+                mailOptions(email, "account activation", link),
+                (err, info) => {
+                    if (err) throw new Error(err);
+                }
+            );
         } catch (e) {
             res.error(
                 500,
@@ -245,33 +255,6 @@ router.get("/info/:username", async (req, res) => {
                 "Couldn't find the user you were looking for!"
             );
         res.send(user);
-    } catch (e) {
-        res.error(
-            500,
-            "Something went wrong please refresh the page and try again",
-            e
-        );
-    }
-});
-
-router.get("/posts/:username", async (req, res) => {
-    let username = req.params.username,
-        skip = parseInt(req.query.skip) || 0,
-        sort =
-            req.query.sort === "likes" ? { likes: "-1" } : { createdAt: "-1" };
-    try {
-        let user = await User.findOne({ username });
-        if (!user)
-            return res.error(
-                409,
-                "User not found, please verifiy your request"
-            );
-        let posts = await Post.find({ author: user._id })
-            .sort(sort)
-            .skip(skip)
-            .limit(4)
-            .populate("author", "username");
-        res.send(posts);
     } catch (e) {
         res.error(
             500,
