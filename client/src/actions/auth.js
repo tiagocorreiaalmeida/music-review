@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { updateNavbar } from "./navbar";
-import { setPosts } from "./myPosts";
+import { startAppendPosts, setPosts } from "./myPosts";
 
 export const login = user => ({
     type: "login",
@@ -16,8 +16,7 @@ export const startLogin = user => {
     return async dispatch => {
         dispatch(login(user));
         sessionStorage.setItem("auth", JSON.stringify(user));
-        let posts = await axios.get(`/api/user/posts/${user.username}`);
-        dispatch(setPosts(posts.data));
+        dispatch(startAppendPosts(user._id));
     };
 };
 

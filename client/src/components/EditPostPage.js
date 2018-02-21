@@ -10,7 +10,7 @@ export class EditPostPage extends React.Component {
         timer: false
     };
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.setMessagesToDefault();
     }
 

@@ -14,7 +14,7 @@ export class DashboardPage extends React.Component {
         loading: false
     };
 
-    componentWillMount() {
+    componentDidMount() {
         if (!this.props.requested) {
             this.setState(
                 () => ({

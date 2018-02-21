@@ -17,6 +17,8 @@ export default (state = [], action) => {
                         ? post
                         : { ...post, likes: action.likes }
             );
+        case "APPEND_POSTS":
+            return [...state, ...action.posts];
         default:
             return state;
     }

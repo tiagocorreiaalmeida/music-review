@@ -7,9 +7,11 @@ import { setMessagesToDefault } from "../actions/messages";
 
 export class AddPostPage extends React.Component {
     state = {
-        timer: false
+        timer: false,
+        loading: false
     };
-    componentWillMount() {
+
+    componentDidMount() {
         this.props.setMessagesToDefault();
     }
 
@@ -52,7 +54,7 @@ export class AddPostPage extends React.Component {
     }
 }
 
-const mapStateToProps = dispatch => ({
+const mapStateToProps = state => ({
     errorMessage: state.messages.errorMessage
 });
 

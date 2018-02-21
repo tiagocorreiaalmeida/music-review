@@ -125,3 +125,26 @@ export const startLikePost = id => {
         }
     };
 };
+
+export const appendPosts = posts => ({
+    type: "APPEND_POSTS",
+    posts
+});
+
+export const startAppendPosts = (id, skip) => {
+    return async dispatch => {
+        try {
+            let { data: posts } = await axios.get(
+                `/api/post/?skip=${skip}&userid=${id}`
+            );
+            dispatch(appendPosts(posts));
+        } catch (e) {
+            dispatch(
+                setMessages({
+                    errorMessage: e.response.data.error,
+                    successMessage: ""
+                })
+            );
+        }
+    };
+};
