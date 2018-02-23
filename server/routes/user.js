@@ -68,9 +68,13 @@ router.post(
                 activateKey
             });
 
+            let link = `http://localhost:3000/activate/${encodeURIComponent(
+                activateKey
+            )}`;
+            /* 
             let link = `${req.protocol}://${req.get(
                 "host"
-            )}/user/activate/${activateKey}`;
+            )}/activate/${activateKey}`; */
 
             smtpTransport.sendMail(
                 mailOptions(email, "account activation", link),
@@ -94,7 +98,11 @@ router.get(/\/activate\/(.+)/, async (req, res) => {
     let activateKey = req.params[0];
     try {
         let user = await User.findOne({ activateKey });
-        if (!user) return res.error(400, "invalid-link");
+        if (!user)
+            return res.error(
+                400,
+                "Invalid key please verify that you have a valid link!"
+            );
 
         await User.findByIdAndUpdate(user._id, {
             activateKey: "",

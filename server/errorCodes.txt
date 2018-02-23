@@ -16,7 +16,7 @@
 
 
 --Activation
-400 - invalid-link
+400 - Invalid key please verify that you have a valid link!
 
 --Login
 401 - Your login failed!

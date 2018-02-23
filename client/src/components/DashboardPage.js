@@ -104,7 +104,8 @@ export class DashboardPage extends React.Component {
                     </div>
                 )}
                 {this.state.latest &&
-                    !this.props.latestInfoMessage && (
+                    !this.props.latestInfoMessage &&
+                    this.props.latestPosts.length > 0 && (
                         <div className="has-text-centered">
                             <button
                                 className="button is-info is-rounded is-medium"
@@ -122,7 +123,8 @@ export class DashboardPage extends React.Component {
                     )}
 
                 {!this.state.latest &&
-                    !this.props.mostRatedInfoMessage && (
+                    !this.props.mostRatedInfoMessage &&
+                    this.props.mostRatedPosts.length > 0 && (
                         <div className="has-text-centered">
                             <button
                                 className="button is-info is-rounded is-medium"

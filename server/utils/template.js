@@ -148,7 +148,7 @@ export default link => `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitiona
 							<table class="flexible" width="600" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
 								<tr>
 									<td class="img-flex">
-										<img src="images/img-02.jpg" style="vertical-align:top;" width="600" height="249" alt="" />
+										<img src="./images/background-mail.jpg" style="vertical-align:top;" width="600" height="249" alt="" />
 									</td>
 								</tr>
 								<tr>
@@ -173,7 +173,7 @@ export default link => `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitiona
 														<tr>
 															<td data-bgcolor="bg-button" data-size="size button" data-min="10" data-max="16" class="btn" align="center" style="font:12px/14px Arial, Helvetica, sans-serif; color:#f8f9fb; text-transform:uppercase; mso-padding-alt:12px 10px 10px; border-radius:2px;"
 															 bgcolor="#f5ba1c">
-																<a target="${link}" style="text-decoration:none; color:#f8f9fb; display:block; padding:15px 10px; width:150px;" href="#">Activate account</a>
+																<a href="${link}" target="_blank" style="text-decoration:none; color:#f8f9fb; display:block; padding:15px 10px; width:150px;" href="#">Activate account</a>
 															</td>
 														</tr>
 													</table>

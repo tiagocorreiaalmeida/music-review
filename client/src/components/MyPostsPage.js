@@ -59,16 +59,17 @@ export class MyPostsPage extends React.Component {
                         {this.state.info}
                     </div>
                 )}
-                {!this.state.info && (
-                    <div className="has-text-centered">
-                        <button
-                            className="button is-info is-rounded is-medium"
-                            onClick={this.onLoadMoreClick}
-                        >
-                            Load more
-                        </button>
-                    </div>
-                )}
+                {!this.state.info &&
+                    this.props.posts.length > 0 && (
+                        <div className="has-text-centered">
+                            <button
+                                className="button is-info is-rounded is-medium"
+                                onClick={this.onLoadMoreClick}
+                            >
+                                Load more
+                            </button>
+                        </div>
+                    )}
             </div>
         );
     }
