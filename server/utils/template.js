@@ -148,7 +148,7 @@ export default link => `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitiona
 							<table class="flexible" width="600" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
 								<tr>
 									<td class="img-flex">
-										<img src="./images/background-mail.jpg" style="vertical-align:top;" width="600" height="249" alt="" />
+										<img src="" style="vertical-align:top;" width="600" height="249" alt="" />
 									</td>
 								</tr>
 								<tr>

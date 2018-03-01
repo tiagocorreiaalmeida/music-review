@@ -30,10 +30,6 @@ const UserSchema = mongoose.Schema({
         data: Buffer,
         contentType: String
     },
-    isAdmin: {
-        type: Boolean,
-        default: false
-    },
     createdAt: {
         type: String,
         default: moment().valueOf()

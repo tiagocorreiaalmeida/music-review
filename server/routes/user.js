@@ -150,8 +150,6 @@ router.patch("/update", auth, async (req, res) => {
         delete userUpdates.password;
     } else if (userUpdates.avatar) {
         delete userUpdates.avatar;
-    } else if (userUpdates.isAdmin) {
-        delete userUpdates.isAdmin;
     } else if (userUpdates.createdAt) {
         delete userUpdates.createdAt;
     }

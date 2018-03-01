@@ -213,11 +213,16 @@ router.patch("/like/:id", auth, async (req, res) => {
 router.get("/", async (req, res) => {
     let skip = parseInt(req.query.skip) || 0,
         userID = req.query.userid,
+        postID = req.query.postid,
         sort =
             req.query.sort === "likes" ? { likes: "-1" } : { createdAt: "-1" };
-    let searchQuery = { author: userID || "" };
+    if (postID && !ObjectID.isValid(postID) || userID && !ObjectID.isValid(userID)) return res.error(409, "Invalid data")
+    let searchQuery = {};
+    if (postID) searchQuery._id = postID;
+    if (userID) searchQuery.author = userID;
+
     try {
-        let posts = await Post.find()
+        let posts = await Post.find(searchQuery)
             .sort(sort)
             .skip(skip)
             .limit(4)

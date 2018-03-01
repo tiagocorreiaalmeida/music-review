@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default class ProfilePage extends React.Component {
     render() {
@@ -17,6 +18,7 @@ export default class ProfilePage extends React.Component {
                         </div>
                     </div>
                 </section>
+                <div className="bg-white" />
             </div>
         );
     }

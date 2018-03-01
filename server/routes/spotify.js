@@ -3,8 +3,6 @@ import SpotifyWebApi from "spotify-web-api-node";
 
 import auth from "../utils/auth";
 
-let triesCount = 0;
-
 const router = express.Router(),
     spotifyApi = new SpotifyWebApi({
         clientId: process.env.SPOTIFY_ID,

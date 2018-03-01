@@ -66,7 +66,7 @@ export class Post extends React.Component {
                             <p className="review">
                                 {this.props.post.review.length > 256
                                     ? this.props.post.review.slice(0, 253) +
-                                      "..."
+                                    "..."
                                     : this.props.post.review}
                             </p>
                             <button
@@ -80,7 +80,7 @@ export class Post extends React.Component {
                                 to={
                                     this.props.author
                                         ? `/edit/${this.props.post._id}`
-                                        : "/"
+                                        : `/post/${this.props.post._id}`
                                 }
                                 className="button is-info is-size-5 has-text-weight-bold mg-left-small"
                             >
@@ -98,11 +98,11 @@ export class Post extends React.Component {
                             {this.props.post.likes.includes(
                                 this.props.userID
                             ) && (
-                                <p className="has-text-grey mg-top-small">
-                                    <i className="fas fa-check" /> You liked
-                                    this post.
+                                    <p className="has-text-grey mg-top-small">
+                                        <i className="fas fa-check" /> You liked
+                                        this post.
                                 </p>
-                            )}
+                                )}
                         </div>
                     </div>
                 </div>

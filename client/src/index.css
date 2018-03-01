@@ -26,6 +26,10 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
+.bg-white {
+    background-color: #fff;
+}
+
 .size-small {
     max-width: 30rem;
 }
