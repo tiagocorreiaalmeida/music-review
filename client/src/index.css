@@ -280,6 +280,10 @@ body {
 /*------------------------------*/
 /*-------------GENERAL----------*/
 
+.fadeIn{
+    animation: fadeIn 1s;
+}
+
 .container {
     animation: fadeIn 1s;
 }

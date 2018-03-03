@@ -9,6 +9,8 @@ const router = express.Router(),
         clientSecret: process.env.SPOTIFY_KEY
     });
 
+let triesCount = 0;
+
 async function setSpotifyAccessToken() {
     try {
         let data = await spotifyApi.clientCredentialsGrant();
@@ -17,7 +19,6 @@ async function setSpotifyAccessToken() {
         triesCount = 0;
     } catch (e) {
         if (triesCount < 3) {
-            spotifyApi.refreshAccessToken();
             return setSpotifyAccessToken();
         } else {
             console.log(e);

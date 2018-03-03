@@ -126,9 +126,9 @@ router.post("/login", (req, res, next) => {
             return res.error(409, "Please activate your account before!");
         req.logIn(user, e => {
             if (err) return res.error(401, "Your login failed!");
-            delete user.password;
-            delete user.active;
-            delete user.activatekey;
+            delete user._doc.password;
+            delete user._doc.active;
+            delete user._doc.activateKey;
             res.send(user);
         });
     })(req, res, next);
@@ -142,8 +142,8 @@ router.get("/logout", auth, (req, res) => {
 
 router.patch("/update", auth, async (req, res) => {
     let userUpdates = {
-            ...req.body
-        },
+        ...req.body
+    },
         user;
 
     if (userUpdates.password) {
@@ -182,6 +182,9 @@ router.patch("/update", auth, async (req, res) => {
             e
         );
     } finally {
+        delete user._doc.password;
+        delete user._doc.active;
+        delete user._doc.activateKey;
         res.send(user);
     }
 });
@@ -235,7 +238,7 @@ router.patch("/avatar", upload.single("avatar"), auth, async (req, res) => {
             },
             { new: true }
         );
-        res.send(user);
+        res.send(user.avatar);
     } catch (e) {
         res.error(
             500,
