@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import moment from "moment";
 
 import { startLikePost } from "../actions/myPosts";
-import { startLikeOtherPost } from "../actions/posts";
 import { updateNavbar } from "../actions/navbar";
 
 export class Post extends React.Component {
@@ -13,12 +12,7 @@ export class Post extends React.Component {
             return this.props.updateNavbar({
                 modalIsActive: true
             });
-
-        if (!this.props.author) {
-            this.props.likeOther(this.props.post._id);
-        } else {
-            this.props.like(this.props.post._id);
-        }
+        this.props.like(this.props.post._id);
     };
 
     render() {
@@ -118,7 +112,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     like: id => dispatch(startLikePost(id)),
-    likeOther: id => dispatch(startLikeOtherPost(id)),
     updateNavbar: updates => dispatch(updateNavbar(updates))
 });
 

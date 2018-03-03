@@ -26,7 +26,7 @@ export class AddPostPage extends React.Component {
                     this.setState(() => ({
                         timer: setTimeout(
                             () => this.props.history.push("/myposts"),
-                            3000
+                            2500
                         )
                     }));
             })

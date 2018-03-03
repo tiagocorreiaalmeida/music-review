@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "axios";
 
-import { startLikeOtherPost } from "../actions/posts";
+import { startLikePost } from "../actions/myPosts";
 import { updateNavbar } from "../actions/navbar";
 
 export class PostInfo extends React.Component {
@@ -118,7 +118,7 @@ const mapStateToProps = (state, props) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    like: id => dispatch(startLikeOtherPost(id)),
+    like: id => dispatch(startLikePost(id)),
     updateNavbar: updates => dispatch(updateNavbar(updates))
 })
 

@@ -7,11 +7,14 @@ import { setMessagesToDefault } from "../actions/messages";
 
 export class EditPostPage extends React.Component {
     state = {
-        timer: false
+        timer: false,
+        loading: true
     };
 
     componentDidMount() {
         this.props.setMessagesToDefault();
+        if (!this.props.post) return this.props.history.push("/");
+        this.setState(() => ({ loading: false }));
     }
 
     componentWillUnmount() {
@@ -25,7 +28,7 @@ export class EditPostPage extends React.Component {
                     this.setState(() => ({
                         timer: setTimeout(
                             () => this.props.history.push("/myposts"),
-                            3000
+                            2500
                         )
                     }));
             })
@@ -39,24 +42,45 @@ export class EditPostPage extends React.Component {
     render() {
         return (
             <div className="container">
-                <section className="hero is-success is-bold is-small promo-block">
-                    <div className="hero-body">
-                        <div className="container">
-                            <h1 className="title">
-                                <i className="fas fa-edit mg-right-small" />
-                                {`Editing ${this.props.post.title}`}
-                            </h1>
-                            <h2 className="subtitle">
-                                Make all the changes needed
-                            </h2>
+                {
+                    this.state.loading ? (
+                        <div className="sk-circle">
+                            <div className="sk-circle1 sk-child"></div>
+                            <div className="sk-circle2 sk-child"></div>
+                            <div className="sk-circle3 sk-child"></div>
+                            <div className="sk-circle4 sk-child"></div>
+                            <div className="sk-circle5 sk-child"></div>
+                            <div className="sk-circle6 sk-child"></div>
+                            <div className="sk-circle7 sk-child"></div>
+                            <div className="sk-circle8 sk-child"></div>
+                            <div className="sk-circle9 sk-child"></div>
+                            <div className="sk-circle10 sk-child"></div>
+                            <div className="sk-circle11 sk-child"></div>
+                            <div className="sk-circle12 sk-child"></div>
                         </div>
-                    </div>
-                </section>
-                <PostForm
-                    onSubmit={this.onSubmit}
-                    post={this.props.post}
-                    onRemove={this.onRemove}
-                />
+                    ) : (
+                            <div>
+                                <section className="hero is-success is-bold is-small promo-block">
+                                    <div className="hero-body">
+                                        <div className="container">
+                                            <h1 className="title">
+                                                <i className="fas fa-edit mg-right-small" />
+                                                {`Editing ${this.props.post.title}`}
+                                            </h1>
+                                            <h2 className="subtitle">
+                                                Make all the changes needed
+                                    </h2>
+                                        </div>
+                                    </div>
+                                </section>
+                                <PostForm
+                                    onSubmit={this.onSubmit}
+                                    post={this.props.post}
+                                    onRemove={this.onRemove}
+                                />
+                            </div>
+                        )
+                }
             </div>
         );
     }

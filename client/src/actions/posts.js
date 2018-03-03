@@ -104,22 +104,6 @@ export const setLikesOtherPost = (id, likes) => ({
     id
 });
 
-export const startLikeOtherPost = (id, likes) => {
-    return async dispatch => {
-        try {
-            let { data: likes } = await axios.patch(`/api/post/like/${id}`);
-            dispatch(setLikesOtherPost(id, likes));
-            dispatch(setLikes(id, likes));
-        } catch (e) {
-            dispatch(
-                setMessages({
-                    errorMessage: e.response.data.error,
-                    successMessage: ""
-                })
-            );
-        }
-    };
-};
 
 export const setRecent = post => ({
     type: "SET_RECENT",

@@ -27,12 +27,12 @@ export default (state = postsDefaultState, action) => {
             return {
                 ...state,
                 mostRatedPosts: state.mostRatedPosts.map(
-                    post =>
-                        post._id !== action.id
-                            ? post
-                            : { ...post, likes: action.likes }
+                    post => post._id !== action.id
+                        ? post
+                        : { ...post, likes: action.likes }
+
                 ),
-                latestPosts: state.mostRatedPosts.map(
+                latestPosts: state.latestPosts.map(
                     post =>
                         post._id !== action.id
                             ? post
