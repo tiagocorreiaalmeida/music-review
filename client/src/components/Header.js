@@ -82,23 +82,23 @@ export class Header extends React.Component {
                                     </a>
                                 </div>
                             ) : (
-                                <div className="navbar-end">
-                                    <NavLink
-                                        onClick={this.onBurgerClick}
-                                        to="/"
-                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
-                                        activeClassName="navbar-item--active"
-                                    >
-                                        Home
+                                    <div className="navbar-end">
+                                        <NavLink
+                                            onClick={this.onBurgerClick}
+                                            to="/"
+                                            className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                            activeClassName="navbar-item--active"
+                                        >
+                                            Home
                                     </NavLink>
-                                    <a
-                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
-                                        onClick={this.OnModalClick}
-                                    >
-                                        Login
+                                        <a
+                                            className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                            onClick={this.OnModalClick}
+                                        >
+                                            Login
                                     </a>
-                                </div>
-                            )}
+                                    </div>
+                                )}
                         </div>
                     </div>
                 </nav>

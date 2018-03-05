@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { setMessages } from "../actions/messages";
-import { startAddPost } from "../actions/myPosts";
 
 export class PostForm extends React.Component {
     state = {
@@ -137,27 +136,27 @@ export class PostForm extends React.Component {
                                             {this.state.searchError}
                                         </p>
                                     ) : (
-                                        this.state.searchResults.map(
-                                            (ele, i) => {
-                                                return (
-                                                    <a
-                                                        className="popover__item is-size-5"
-                                                        key={i}
-                                                        onClick={() =>
-                                                            this.onAlbumClick(i)
-                                                        }
-                                                    >
-                                                        <img
-                                                            className="popover__item__thumbnail"
-                                                            alt="album thumbnail"
-                                                            src={ele.thumbnail}
-                                                        />{" "}
-                                                        {ele.albumName}
-                                                    </a>
-                                                );
-                                            }
-                                        )
-                                    )}
+                                            this.state.searchResults.map(
+                                                (ele, i) => {
+                                                    return (
+                                                        <a
+                                                            className="popover__item is-size-5"
+                                                            key={i}
+                                                            onClick={() =>
+                                                                this.onAlbumClick(i)
+                                                            }
+                                                        >
+                                                            <img
+                                                                className="popover__item__thumbnail"
+                                                                alt="album thumbnail"
+                                                                src={ele.thumbnail}
+                                                            />{" "}
+                                                            {ele.albumName}
+                                                        </a>
+                                                    );
+                                                }
+                                            )
+                                        )}
                                 </div>
                             </div>
                         </div>

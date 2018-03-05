@@ -9,20 +9,14 @@ const router = express.Router(),
         clientSecret: process.env.SPOTIFY_KEY
     });
 
-let triesCount = 0;
 
 async function setSpotifyAccessToken() {
     try {
         let data = await spotifyApi.clientCredentialsGrant();
         spotifyApi.setAccessToken(data.body["access_token"]);
         spotifyApi.setRefreshToken(data.body["refresh_token"]);
-        triesCount = 0;
     } catch (e) {
-        if (triesCount < 3) {
-            return setSpotifyAccessToken();
-        } else {
-            console.log(e);
-        }
+        console.log(e);
     }
 }
 
@@ -48,6 +42,11 @@ router.get(/(.+)/, auth, async (req, res) => {
         }));
         res.send(dataClean);
     } catch (e) {
+        if (e.statusCode == 401 && e.name == "WebapiError") {
+            return spotifyApi.refreshAccessToken()
+                .then((data) =>
+                    spotifyApi.setAccessToken(data.body['access_token']));
+        }
         res.error(
             500,
             "Something went wrong please refresh the page and try again",

@@ -6,6 +6,10 @@ body {
 
 /*------------------------------*/
 /*---------------UTILS----------*/
+.mg-right-tiny{
+    margin-right:.5rem;
+}
+
 .mg-right-small {
     margin-right: 1rem;
 }
@@ -18,8 +22,16 @@ body {
     margin-top: 1rem;
 }
 
+.mg-top-medium{
+    margin-top:2rem;
+}
+
 .no-margin {
     margin: 0;
+}
+
+.margin-auto{
+    margin: auto;
 }
 
 .bg-light {
@@ -32,6 +44,7 @@ body {
 
 .size-small {
     max-width: 30rem;
+    margin: 0 auto;
 }
 
 /*------------------------------*/

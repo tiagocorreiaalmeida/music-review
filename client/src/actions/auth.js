@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import { updateNavbar } from "./navbar";
 import { startAppendPosts, setPosts } from "./myPosts";
 
@@ -19,6 +17,7 @@ export const startLogin = user => {
         dispatch(startAppendPosts(user._id));
     };
 };
+
 
 export const startLogout = () => {
     return dispatch => {
@@ -40,3 +39,8 @@ export const logBack = () => {
         if (user) return dispatch(startLogin(user));
     };
 };
+
+export const updateData = (updates) => ({
+    type: "update_data",
+    updates
+});

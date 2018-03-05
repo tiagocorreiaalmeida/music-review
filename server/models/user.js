@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 import moment from "moment";
+import fs from "fs";
+import path from "path";
+
+const defaultAvatar = fs.readFileSync(path.join(process.cwd(), "media", "user.png"), "base64");
 
 const UserSchema = mongoose.Schema({
     email: {
@@ -27,8 +31,8 @@ const UserSchema = mongoose.Schema({
         default: ""
     },
     avatar: {
-        data: Buffer,
-        contentType: String
+        type: String,
+        default: defaultAvatar
     },
     createdAt: {
         type: String,

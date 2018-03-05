@@ -7,6 +7,9 @@ import { connect } from "react-redux";
 import { startLogin } from "../actions/auth";
 import { updateNavbar } from "../actions/navbar";
 
+export const encryptIt = password =>
+    bcrypt.hashSync(password, process.env.REACT_APP_SALT);
+
 export class LoginModal extends React.Component {
     state = {
         login: true,
@@ -51,8 +54,7 @@ export class LoginModal extends React.Component {
             successMessage: ""
         }));
 
-    encryptIt = password =>
-        bcrypt.hashSync(password, process.env.REACT_APP_SALT);
+
 
     onSubmit = e => {
         e.preventDefault();
@@ -64,10 +66,10 @@ export class LoginModal extends React.Component {
         if (!this.state.login) {
             if (this.state.username.length < 2) {
                 error = "The username minimum length is 2 characters!";
-            } else if (this.state.password !== this.state.repeatedPassword) {
-                error = "The password dont match!";
             } else if (this.state.password.length < 4) {
                 error = "The password minimum length is 4 characters!";
+            } else if (this.state.password !== this.state.repeatedPassword) {
+                error = "The two passwords dont match!";
             }
 
             if (error) return this.setState(() => ({ error }));
@@ -76,7 +78,7 @@ export class LoginModal extends React.Component {
                 .post("/api/user/register", {
                     email: this.state.email,
                     username: this.state.username,
-                    password: this.encryptIt(this.state.password)
+                    password: encryptIt(this.state.password)
                 })
                 .then(response => {
                     this.setState(() => ({
@@ -94,7 +96,7 @@ export class LoginModal extends React.Component {
             axios
                 .post("/api/user/login", {
                     email: this.state.email,
-                    password: this.encryptIt(this.state.password)
+                    password: encryptIt(this.state.password)
                 })
                 .then(response => this.props.login(response.data))
                 .catch(e =>

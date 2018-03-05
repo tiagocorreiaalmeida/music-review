@@ -80,10 +80,6 @@ export default link => `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitiona
 				font-size: 0 !important;
 				line-height: 0 !important;
 			}
-			td[class="img-flex"] img {
-				width: 100% !important;
-				height: auto !important;
-			}
 			td[class="aligncenter"] {
 				text-align: center !important;
 			}
@@ -106,10 +102,6 @@ export default link => `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitiona
 			}
 			td[class="description"] {
 				padding: 30px 20px !important;
-			}
-			td[class="i-120"] img {
-				width: 120px !important;
-				height: auto !important;
 			}
 			td[class="footer"] {
 				padding: 5px 20px 20px !important;
@@ -146,11 +138,6 @@ export default link => `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitiona
 					<tr>
 						<td data-bgcolor="bg-module" bgcolor="#eaeced">
 							<table class="flexible" width="600" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
-								<tr>
-									<td class="img-flex">
-										<img src="" style="vertical-align:top;" width="600" height="249" alt="" />
-									</td>
-								</tr>
 								<tr>
 									<td data-bgcolor="bg-block" class="holder" style="padding:35px 30px;" bgcolor="#f9f9f9">
 										<table width="100%" cellpadding="0" cellspacing="0">

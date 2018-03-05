@@ -172,7 +172,7 @@ router.patch("/update", auth, async (req, res) => {
                 );
 
             user = await User.findByIdAndUpdate(req.user.id, userUpdates, {
-                new: true
+                new: true, select: { _id: 0, username: 1 }
             });
         }
     } catch (e) {
@@ -182,9 +182,6 @@ router.patch("/update", auth, async (req, res) => {
             e
         );
     } finally {
-        delete user._doc.password;
-        delete user._doc.active;
-        delete user._doc.activateKey;
         res.send(user);
     }
 });
@@ -272,5 +269,27 @@ router.get("/info/:username", async (req, res) => {
         );
     }
 });
+
+router.delete("/", auth, async (req, res) => {
+    try {
+        await Post.deleteMany({ author: req.user.id });
+
+        await Post.updateMany({ likes: req.user.id }, { $pull: { likes: req.user.id } })
+
+        await User.remove({ _id: req.user.id });
+
+        req.logOut();
+        req.session.destroy();
+
+    } catch (e) {
+        res.error(
+            500,
+            "Something went wrong please refresh the page and try again",
+            e
+        );
+    } finally {
+        res.send();
+    }
+})
 
 export default router;
