@@ -142,7 +142,7 @@ router.patch("/:id", auth, async (req, res) => {
         )
             return res.error(
                 409,
-                "You can't change the album content after someone liking your content!"
+                "You can't change the album content after someone liking it!"
             );
 
         let titleExists = await Post.findOne({
