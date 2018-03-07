@@ -101,7 +101,9 @@ export class ProfilePage extends React.Component {
         if (e.target.files.length > 0) {
             let file = e.target.files[0]
             let { name: fileName, type, size } = file;
-            if (type !== "image/jpeg" && type !== "image/png") {
+            if (!file) {
+                this.setState(() => ({ errorMessage: "Upload an image before making the request!", successMessage: "" }));
+            } else if (type !== "image/jpeg" && type !== "image/png") {
                 this.setState(() => ({ errorMessage: "Invalid file type, the valid formats are JPG and PNG", successMessage: "" }));
             } else if (size / 1000000 > 2) {
                 this.setState(() => ({ errorMessage: "The avatar you have chosen exceeds the limit(2mb) size!", successMessage: "" }));
@@ -184,7 +186,7 @@ export class ProfilePage extends React.Component {
                                 </div>
                             </div>)}
                             {this.state.page === "avatar" && (<div>
-                                <div className="file has-name is-boxed is-info">
+                                <div className="file has-name is-boxed is-info is-centered">
                                     <label className="file-label">
                                         <input className="file-input" type="file" name="resume" onChange={this.onImageUpload} />
                                         <span className="file-cta">

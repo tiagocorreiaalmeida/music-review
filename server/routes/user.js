@@ -216,7 +216,7 @@ router.patch(
 router.patch("/avatar", upload.single("avatar"), auth, async (req, res) => {
     const file = req.file;
     if (!file)
-        return res.error(409, "Upload an image before make the request!");
+        return res.error(409, "Upload an image before making the request!");
     if (file.size / 1000000 > 2)
         return res.error(
             409,

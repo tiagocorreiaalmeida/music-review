@@ -13,7 +13,7 @@ import EditPostPage from "../components/EditPostPage";
 import Footer from "../components/Footer";
 import ActivateAccountPage from "../components/ActivateAccountPage";
 import PostInfoPage from "../components/PostInfoPage";
-
+import UserInfoPage from "../components/UserInfoPage";
 import { logBack } from "../actions/auth";
 
 class AppRouter extends React.Component {
@@ -56,6 +56,9 @@ class AppRouter extends React.Component {
                         />
                         <Route path="/post/:id"
                             component={PostInfoPage} />
+                        <Route path="/user/:username"
+                            component={UserInfoPage}
+                        />
                     </Switch>
                     <Footer />
                 </div>

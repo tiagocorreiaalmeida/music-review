@@ -26,6 +26,10 @@ body {
     margin-top:2rem;
 }
 
+.mg-bottom-small{
+    margin-bottom: 1rem; 
+}
+
 .no-margin {
     margin: 0;
 }
@@ -45,6 +49,15 @@ body {
 .size-small {
     max-width: 30rem;
     margin: 0 auto;
+}
+
+.rounded{
+    border-radius:50%;
+}
+
+.is-192x192{
+    max-height: 192px;
+    width: 192px;
 }
 
 /*------------------------------*/

@@ -22,13 +22,9 @@ export class Post extends React.Component {
                     <div className="card-content">
                         <div className="media">
                             {!this.props.author && (
-                                <div className="media-center">
-                                    <img
-                                        src="http://www.radfaces.com/images/avatars/daria-morgendorffer.jpg"
-                                        className="author-image"
-                                        alt="User avatar"
-                                    />
-                                </div>
+                                <Link to={`/user/${this.props.post.author.username}`}>
+                                    <img src={"data:image/jpeg;base64," + this.props.post.author.avatar} alt="user avatar" className="author-image" />
+                                </Link>
                             )}
                             <div
                                 className={`media-content has-text-centered ${this
@@ -40,9 +36,9 @@ export class Post extends React.Component {
                                     </p>
                                 </Link>
                                 <p className="subtitle is-6 article-subtitle">
-                                    <a href="/userpage">
+                                    <Link to={`/user/${this.props.post.author.username}`}>
                                         @{this.props.post.author.username}
-                                    </a>
+                                    </Link>
                                     , on
                                     {moment(
                                         Number(this.props.post.createdAt)

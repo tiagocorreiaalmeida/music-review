@@ -49,10 +49,7 @@ router.post(
                 );
 
             await Post.create(post);
-            newPost = await Post.findOne({ title: post.title }).populate(
-                "author",
-                "username"
-            );
+            newPost = await Post.findOne({ title: post.title }).populate("author", "username avatar");
         } catch (e) {
             res.error(
                 500,
@@ -166,7 +163,7 @@ router.patch("/:id", auth, async (req, res) => {
 
         post = await Post.findByIdAndUpdate(postID, postUpdates, {
             new: true
-        }).populate("author", "username");
+        }).populate("author", "username avatar");
     } catch (e) {
         res.error(
             500,
@@ -226,7 +223,7 @@ router.get("/", async (req, res) => {
             .sort(sort)
             .skip(skip)
             .limit(4)
-            .populate("author", "username");
+            .populate("author", "username avatar");
         res.send(posts);
     } catch (e) {
         res.error(
