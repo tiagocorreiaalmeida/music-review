@@ -8,7 +8,8 @@ import { setMessagesToDefault } from "../actions/messages";
 export class EditPostPage extends React.Component {
     state = {
         timer: false,
-        loading: true
+        loading: true,
+        open: false
     };
 
     componentDidMount() {
@@ -37,7 +38,9 @@ export class EditPostPage extends React.Component {
     onRemove = () => {
         this.props.removePost(this.props.post._id);
         this.props.history.push("/myposts");
-    };
+    }
+
+    closeModal = () => this.setState(() => ({ open: false }))
 
     render() {
         return (
@@ -68,7 +71,7 @@ export class EditPostPage extends React.Component {
                                                 {`Editing ${this.props.post.title}`}
                                             </h1>
                                             <h2 className="subtitle">
-                                                Make all the changes needed
+                                                Make all the needed changes
                                     </h2>
                                         </div>
                                     </div>

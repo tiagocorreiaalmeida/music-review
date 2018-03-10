@@ -60,6 +60,10 @@ body {
     width: 192px;
 }
 
+.is-centered{
+    align-items: center;
+}
+
 /*------------------------------*/
 /*-------------POPOVER----------*/
 .popover {
@@ -336,4 +340,34 @@ body {
     to {
         opacity: 1;
     }
+}
+
+/*------------------------------*/
+/*-------------NAVBAR----------*/
+
+.navbar{
+    padding: 0 1rem;
+    box-shadow: 0 1rem 1rem rgba(0,0,0,.1);
+}
+
+.navbar-burger{
+    background-color: #fff;
+    color: #3b9d81;
+    border: 2px solid #3b9d81;
+}
+
+.navbar-burger.is-active{
+    background-color: #fff;
+    color: #3b9d81;
+    border: 2px solid #3b9d81;
+}
+
+.logo{
+    display:flex;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.logo-img{
+    max-height: 45px;
 }

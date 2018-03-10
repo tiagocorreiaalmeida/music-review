@@ -235,7 +235,8 @@ export class PostForm extends React.Component {
                             </p>
                         )}
 
-                        <button className="button is-primary is-size-5 has-text-weight-bold">
+                        <button className="button is-primary is-size-5 has-text-weight-bold mg-right-small">
+                            <i className="fas fa-check mg-right-tiny"></i>
                             {this.props.post ? "Save changes" : "Create"}
                         </button>
                         {this.props.onRemove && (
@@ -243,7 +244,7 @@ export class PostForm extends React.Component {
                                 className="button is-danger is-size-5 has-text-weight-bold"
                                 onClick={this.props.onRemove}
                             >
-                                Delete
+                                <i className="fas fa-trash-alt mg-right-tiny"></i>Delete
                             </button>
                         )}
                     </form>

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import LoginModal from "./LoginModal";
 import { updateNavbar } from "../actions/navbar";
 import { startLogout } from "../actions/auth";
+import Logo from "../images/logo.png"
 
 export class Header extends React.Component {
     onBurgerClick = () =>
@@ -20,11 +21,11 @@ export class Header extends React.Component {
     render() {
         return (
             <div>
-                <nav className="navbar is-fixed-top is-light">
-                    <div className="container">
-                        <div className="navbar-brand">
-                            <NavLink to="/" className="navbar-item is-size-2">
-                                <i className="fas fa-headphones" />
+                <nav className="navbar is-fixed-top">
+                    <div className="container mg-small">
+                        <div className="navbar-brand is-centered">
+                            <NavLink to="/" className="is-size-2 logo">
+                                <img src={Logo} className="logo-img" alt="Music blog" />
                             </NavLink>
                             <button
                                 className={`button navbar-burger ${this.props
@@ -45,40 +46,40 @@ export class Header extends React.Component {
                                     <NavLink
                                         onClick={this.onBurgerClick}
                                         to="/"
-                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                        className="navbar-item is-size-5 is-uppercase has-text-weight-semibold"
                                         activeClassName="navbar-item--active"
                                     >
-                                        Home
+                                        <i className="fas fa-home"></i>
                                     </NavLink>
                                     <NavLink
                                         onClick={this.onBurgerClick}
                                         to="/myposts"
-                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                        className="navbar-item is-size-5 is-uppercase has-text-weight-semibold"
                                         activeClassName="navbar-item--active"
                                     >
-                                        My posts
+                                        <i className="fas fa-list-ul"></i>
                                     </NavLink>
                                     <NavLink
                                         onClick={this.onBurgerClick}
                                         to="/addpost"
-                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                        className="navbar-item is-size-5 is-uppercase has-text-weight-semibold"
                                         activeClassName="navbar-item--active"
                                     >
-                                        Create Post
+                                        <i className="fas fa-plus"></i>
                                     </NavLink>
                                     <NavLink
                                         onClick={this.onBurgerClick}
                                         to="/profile"
-                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                        className="navbar-item is-size-5 is-uppercase has-text-weight-semibold"
                                         activeClassName="navbar-item--active"
                                     >
-                                        Profile
+                                        <i className="fas fa-user"></i>
                                     </NavLink>
                                     <a
-                                        className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                        className="navbar-item is-size-5 is-uppercase has-text-weight-semibold"
                                         onClick={this.onLogoutClick}
                                     >
-                                        Logout
+                                        <i className="fas fa-sign-out-alt"></i>
                                     </a>
                                 </div>
                             ) : (
@@ -86,17 +87,17 @@ export class Header extends React.Component {
                                         <NavLink
                                             onClick={this.onBurgerClick}
                                             to="/"
-                                            className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                            className="navbar-item is-size-5 is-uppercase has-text-weight-semibold"
                                             activeClassName="navbar-item--active"
                                         >
-                                            Home
-                                    </NavLink>
+                                            <i className="fas fa-home"></i>
+                                        </NavLink>
                                         <a
-                                            className="navbar-item is-size-6 is-uppercase has-text-weight-semibold"
+                                            className="navbar-item is-size-5 is-uppercase has-text-weight-semibold"
                                             onClick={this.OnModalClick}
                                         >
-                                            Login
-                                    </a>
+                                            <i className="fas fa-sign-in-alt"></i>
+                                        </a>
                                     </div>
                                 )}
                         </div>

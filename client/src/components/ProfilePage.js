@@ -145,7 +145,7 @@ export class ProfilePage extends React.Component {
                 <div className="bg-white mg-top-medium">
                     <div className="section">
                         <div className="size-small">
-                            {this.state.page === "info" && (<div>
+                            {this.state.page === "info" && (<div className="fadeIn">
                                 <figure className="image is-128x128 margin-auto">
                                     <img src={"data:image/jpeg;base64," + this.state.user.avatar} alt="user avatar" />
                                 </figure>
@@ -167,7 +167,7 @@ export class ProfilePage extends React.Component {
                                 </div>
                                 <p>Created on <i className="far fa-clock"></i> {moment(parseInt(this.state.user.createdAt, 10)).format(" Do MMMM YYYY")}</p>
                             </div>)}
-                            {this.state.page === "password" && (<div>
+                            {this.state.page === "password" && (<div className="fadeIn">
                                 <div className="field">
                                     <p className="control has-icons-left">
                                         <input className="input is-info" type="password" placeholder="Password" value={this.state.password} onChange={this.onPasswordChange} />
@@ -185,7 +185,7 @@ export class ProfilePage extends React.Component {
                                     </p>
                                 </div>
                             </div>)}
-                            {this.state.page === "avatar" && (<div>
+                            {this.state.page === "avatar" && (<div className="fadeIn">
                                 <div className="file has-name is-boxed is-info is-centered">
                                     <label className="file-label">
                                         <input className="file-input" type="file" name="resume" onChange={this.onImageUpload} />

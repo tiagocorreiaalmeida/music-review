@@ -98,8 +98,8 @@ export class Post extends React.Component {
                                     <i
                                         className={
                                             this.props.author
-                                                ? "fas fa-pencil-alt"
-                                                : "fas fa-link"
+                                                ? "fas fa-pencil-alt mg-right-tiny"
+                                                : "fas fa-link mg-right-tiny"
                                         }
                                     />
                                     {this.props.author ? "Edit" : "See more"}
@@ -109,13 +109,13 @@ export class Post extends React.Component {
                                 this.props.userID
                             ) && (
                                     <p className="has-text-grey mg-top-small">
-                                        <i className="fas fa-check" /> You liked
+                                        <i className="fas fa-info-circle" /> You liked
                                         this post.
                                 </p>
                                 )}
                             {this.props.profile && this.state.likes.includes(this.props.userID) && (
                                 <p className="has-text-grey mg-top-small">
-                                    <i className="fas fa-check" /> You liked
+                                    <i className="fas fa-info-circle" /> You liked
                                     this post.
                                 </p>
                             )}
