@@ -77,7 +77,7 @@ router.post(
             )}/activate/${activateKey}`; */
 
             smtpTransport.sendMail(
-                mailOptions(email, "account activation", link),
+                mailOptions(email, "Account Activation", link),
                 (err, info) => {
                     if (err) throw new Error(err);
                 }

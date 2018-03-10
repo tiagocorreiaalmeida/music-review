@@ -15,6 +15,12 @@ export const startLogin = user => {
         dispatch(login(user));
         sessionStorage.setItem("auth", JSON.stringify(user));
         dispatch(startAppendPosts(user._id));
+        dispatch(
+            updateNavbar({
+                burgerIsActive: false,
+                modalIsActive: false
+            })
+        );
     };
 };
 

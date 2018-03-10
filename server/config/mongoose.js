@@ -13,6 +13,6 @@ async function db() {
 
 db();
 
-mongoose.set("debug", true);
+/* mongoose.set("debug", true); */
 
 export default mongoose;

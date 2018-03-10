@@ -2,17 +2,37 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import moment from "moment";
+import axios from "axios";
 
-import { startLikePost } from "../actions/myPosts";
+import { startLikePost, setLikes } from "../actions/myPosts";
 import { updateNavbar } from "../actions/navbar";
+import { setMessages } from "../actions/messages";
+import { setLikesOtherPost } from "../actions/posts";
 
 export class Post extends React.Component {
-    onLikeClick = () => {
-        if (!this.props.userID)
-            return this.props.updateNavbar({
-                modalIsActive: true
-            });
-        this.props.like(this.props.post._id);
+    state = {
+        likes: this.props.post.likes
+    }
+    onLikeClick = async () => {
+        if (this.props.profile) {
+            try {
+                let { data: likes } = await axios.patch(`/api/post/like/${this.props.post._id}`);
+                this.setState(() => ({ likes: [...likes] }));
+                this.props.setLikes(this.props.post._id, likes);
+                this.props.setLikesPublic(this.props.post._id, likes);
+            } catch (e) {
+                this.props.setMessages({
+                    errorMessage: e.response.data.error,
+                    successMessage: ""
+                });
+            }
+        } else {
+            if (!this.props.userID)
+                return this.props.updateNavbar({
+                    modalIsActive: true
+                });
+            this.props.like(this.props.post._id);
+        }
     };
 
     render() {
@@ -63,7 +83,7 @@ export class Post extends React.Component {
                                 className="button is-primary is-size-5 has-text-weight-bold"
                                 onClick={this.onLikeClick}
                             >
-                                {this.props.post.likes.length}
+                                {this.props.profile ? this.state.likes.length : this.props.post.likes.length}
                                 <i className="fas fa-thumbs-up mg-left-small" />
                             </button>
                             <Link
@@ -85,7 +105,7 @@ export class Post extends React.Component {
                                     {this.props.author ? "Edit" : "See more"}
                                 </p>
                             </Link>
-                            {this.props.post.likes.includes(
+                            {!this.props.profile && this.props.post.likes.includes(
                                 this.props.userID
                             ) && (
                                     <p className="has-text-grey mg-top-small">
@@ -93,6 +113,12 @@ export class Post extends React.Component {
                                         this post.
                                 </p>
                                 )}
+                            {this.props.profile && this.state.likes.includes(this.props.userID) && (
+                                <p className="has-text-grey mg-top-small">
+                                    <i className="fas fa-check" /> You liked
+                                    this post.
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -108,7 +134,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     like: id => dispatch(startLikePost(id)),
-    updateNavbar: updates => dispatch(updateNavbar(updates))
+    updateNavbar: updates => dispatch(updateNavbar(updates)),
+    setMessages: (messages) => dispatch(setMessages(messages)),
+    setLikes: (id, likes) => dispatch(setLikes(id, likes)),
+    setLikesPublic: (id, likes) => dispatch(setLikesOtherPost(id, likes))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);

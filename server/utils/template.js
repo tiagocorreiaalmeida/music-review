@@ -150,8 +150,7 @@ export default link => `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitiona
 											<tr>
 												<td data-color="text" data-size="size text" data-min="10" data-max="26" data-link-color="link text color" data-link-style="font-weight:bold; text-decoration:underline; color:#40aceb;"
 												 align="center" style="font:16px/29px Arial, Helvetica, sans-serif; color:#888; padding:0 0 21px;">
-													Lorem Ipsum is simply dummy text of the printing and typesetting industry. Use this offer has been the industry's standard
-													dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make.
+												 Thank you for signing up, activate your account and join us to share your music preferences and reviews any album that exists.
 												</td>
 											</tr>
 											<tr>

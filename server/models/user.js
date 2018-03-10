@@ -3,7 +3,7 @@ import moment from "moment";
 import fs from "fs";
 import path from "path";
 
-const defaultAvatar = fs.readFileSync(path.join(process.cwd(), "media", "user.png"), "base64");
+const defaultAvatar = fs.readFileSync(path.join(process.cwd(), "media", "user.jpg"), "base64");
 
 const UserSchema = mongoose.Schema({
     email: {
