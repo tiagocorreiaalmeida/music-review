@@ -118,7 +118,7 @@ export class DashboardPage extends React.Component {
                 {this.props.latestInfoMessage &&
                     this.state.latest && (
                         <div className="notification is-info">
-                            {this.props.latestInfoMessage}
+                            <i className="fas fa-info-circle mg-right-tiny"></i>{this.props.latestInfoMessage}
                         </div>
                     )}
 
@@ -138,7 +138,7 @@ export class DashboardPage extends React.Component {
                 {this.props.mostRatedInfoMessage &&
                     !this.state.latest && (
                         <div className="notification is-info">
-                            {this.props.mostRatedInfoMessage}
+                            <i className="fas fa-info-circle mg-right-tiny"></i>{this.props.mostRatedInfoMessage}
                         </div>
                     )}
             </div>

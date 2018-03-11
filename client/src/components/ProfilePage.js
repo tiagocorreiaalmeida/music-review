@@ -151,7 +151,7 @@ export class ProfilePage extends React.Component {
                                 </figure>
                                 <div className="field mg-top-medium">
                                     <p className="control has-icons-left">
-                                        <input className="input is-info" type="text" value={this.state.user.email} disabled />
+                                        <input className="input is-info is-rounded is-medium" type="text" value={this.state.user.email} disabled />
                                         <span className="icon is-small is-left">
                                             <i className="fas fa-envelope"></i>
                                         </span>
@@ -159,7 +159,7 @@ export class ProfilePage extends React.Component {
                                 </div>
                                 <div className="field">
                                     <p className="control has-icons-left">
-                                        <input className="input is-info" type="text" placeholder="Username" value={this.state.user.username} onChange={this.onUsernameChange} />
+                                        <input className="input is-info is-rounded is-medium" type="text" placeholder="Username" value={this.state.user.username} onChange={this.onUsernameChange} />
                                         <span className="icon is-small is-left">
                                             <i className="fas fa-user"></i>
                                         </span>
@@ -170,7 +170,7 @@ export class ProfilePage extends React.Component {
                             {this.state.page === "password" && (<div className="fadeIn">
                                 <div className="field">
                                     <p className="control has-icons-left">
-                                        <input className="input is-info" type="password" placeholder="Password" value={this.state.password} onChange={this.onPasswordChange} />
+                                        <input className="input is-info is-rounded is-medium" type="password" placeholder="Password" value={this.state.password} onChange={this.onPasswordChange} />
                                         <span className="icon is-small is-left">
                                             <i className="fas fa-lock" />
                                         </span>
@@ -178,7 +178,7 @@ export class ProfilePage extends React.Component {
                                 </div>
                                 <div className="field">
                                     <p className="control has-icons-left">
-                                        <input className="input is-info" type="password" placeholder="Repeat Password" value={this.state.repeatedPassword} onChange={this.onrepeatedPasswordChange} />
+                                        <input className="input is-info is-rounded is-medium" type="password" placeholder="Repeat Password" value={this.state.repeatedPassword} onChange={this.onrepeatedPasswordChange} />
                                         <span className="icon is-small is-left">
                                             <i className="fas fa-lock" />
                                         </span>
@@ -205,16 +205,16 @@ export class ProfilePage extends React.Component {
                             </div>)}
                             {this.state.errorMessage && (
                                 <p className="notification is-danger mg-top-small">
-                                    {this.state.errorMessage}
+                                    <i className="fas fa-exclamation-triangle mg-right-tiny"></i>{this.state.errorMessage}
                                 </p>
                             )}
 
                             {this.state.successMessage && (
                                 <p className="notification is-success mg-top-small">
-                                    {this.state.successMessage}
+                                    <i className="far fa-save mg-right-tiny"></i>{this.state.successMessage}
                                 </p>
                             )}
-                            <p className="has-text-centered mg-top-small"><button className="button is-primary" onClick={this.onSaveChangesClick}><i className="fas fa-check mg-right-tiny"></i> Save changes</button> {this.state.page === "info" && (<button className="button is-danger" onClick={this.onDeleteClick}><i className="fas fa-trash-alt mg-right-tiny"></i> Delete</button>)}</p>
+                            <p className="has-text-centered mg-top-small"><button className="button is-size-5 is-primary" onClick={this.onSaveChangesClick}><i className="fas fa-check mg-right-tiny"></i> Save changes</button> {this.state.page === "info" && (<button className="is-size-5 button is-danger" onClick={this.onDeleteClick}><i className="fas fa-trash-alt mg-right-tiny"></i> Delete</button>)}</p>
                         </div>
                     </div>
                 </div>
@@ -226,14 +226,14 @@ export class ProfilePage extends React.Component {
                     <div className="modal-card size-small">
                         <header className="modal-card-head">
                             <p className="modal-card-title">Delete Account</p>
-                            <button className="delete" aria-label="close" onClick={this.closeModal}></button>
+                            <button className="delete is-size-5" aria-label="close" onClick={this.closeModal}></button>
                         </header>
                         <section className="modal-card-body">
-                            <p>Are you sure you wanna delete your account? All your posts will be deleted and you won't be able to recover neither your account or posts later.</p>
+                            <p>Are you sure you want to delete your account? All your posts will be deleted and you won't be able to recover neither your account or posts later.</p>
                         </section>
                         <footer className="modal-card-foot">
-                            <button className="button is-danger" onClick={this.onDeleteAccountClick}>Delete</button>
-                            <button className="button is-primary" onClick={this.closeModal}>Cancel</button>
+                            <button className="button is-danger is-size-5" onClick={this.onDeleteAccountClick}><i className="far fa-trash-alt mg-right-tiny"></i>Delete</button>
+                            <button className="button is-primary is-size-5" onClick={this.closeModal}><i className="fas fa-times-circle mg-right-tiny"></i> Cancel</button>
                         </footer>
                     </div>
                 </div>

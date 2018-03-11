@@ -56,7 +56,7 @@ export class MyPostsPage extends React.Component {
                 )}
                 {this.state.info && (
                     <div className="notification is-info">
-                        {this.state.info}
+                        <i className="fas fa-info-circle mg-right-tiny"></i>{this.state.info}
                     </div>
                 )}
                 {!this.state.info &&

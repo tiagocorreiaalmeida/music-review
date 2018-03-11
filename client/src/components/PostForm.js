@@ -119,7 +119,7 @@ export class PostForm extends React.Component {
                                     Search the album by name
                                 </label>
                                 <input
-                                    className="input is-primary"
+                                    className="input is-primary "
                                     type="text"
                                     placeholder="Primary input"
                                     onChange={this.onSearchChange}
@@ -225,13 +225,13 @@ export class PostForm extends React.Component {
                         </div>
                         {this.props.errorMessage && (
                             <p className="notification is-danger">
-                                {this.props.errorMessage}
+                                <i className="fas fa-exclamation-triangle mg-right-tiny"></i>{this.props.errorMessage}
                             </p>
                         )}
 
                         {this.props.successMessage && (
                             <p className="notification is-success">
-                                {this.props.successMessage}
+                                <i className="far fa-save mg-right-tiny"></i>{this.props.successMessage}
                             </p>
                         )}
 

@@ -123,7 +123,7 @@ export class UserInfoPage extends React.Component {
                 {this.state.latestMessage &&
                     this.state.latest && (
                         <div className="notification is-info">
-                            {this.state.latestMessage}
+                            <i className="fas fa-info-circle mg-right-tiny"></i>{this.state.latestMessage}
                         </div>
                     )}
 
@@ -143,7 +143,7 @@ export class UserInfoPage extends React.Component {
                 {this.state.mostRatedMessage &&
                     !this.state.latest && (
                         <div className="notification is-info">
-                            {this.state.mostRatedMessage}
+                            <i className="fas fa-info-circle mg-right-tiny"></i>{this.state.mostRatedMessage}
                         </div>
                     )}
             </div>

@@ -50,7 +50,7 @@ export class Post extends React.Component {
                                 className={`media-content has-text-centered ${this
                                     .props.author && "no-margin"}`}
                             >
-                                <Link to="/">
+                                <Link to={`/post/${this.props.post._id}`} >
                                     <p className="title article-title">
                                         {this.props.post.title}
                                     </p>

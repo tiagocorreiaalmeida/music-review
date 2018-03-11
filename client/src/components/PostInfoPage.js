@@ -51,7 +51,7 @@ export class PostInfo extends React.Component {
     }
     render() {
         return (
-            <div className="container">
+            <div className="container mg-top-big">
                 <div className="column is-8 is-offset-2">
                     <div className="card article">
                         <div className="card-content">
