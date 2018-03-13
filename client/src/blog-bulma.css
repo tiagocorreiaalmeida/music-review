@@ -84,3 +84,8 @@ div.column.is-8:first-child {
     color:#191414;
 }
 
+@media only screen and (max-width:990px){
+    .promo-block .container {
+        margin:.5rem;
+    }
+}

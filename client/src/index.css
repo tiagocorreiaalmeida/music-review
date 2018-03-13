@@ -1,5 +1,5 @@
 body {
-    margin: 0;
+    margin-top:3rem;
     padding: 0;
     font-family: sans-serif;
 }
@@ -331,6 +331,7 @@ body {
     max-height: 45px;
 }
 
+
 /*------------------------------*/
 /*-------------FOOTER----------*/
 
@@ -359,15 +360,15 @@ body {
     justify-content: center;
     margin: 0 .5rem;
     border-radius:50%;
-    border:2px solid #aeaeae;
+    border:2px solid #f6f6f6;
     width: 3rem;
     height: 3rem;
-    color: #aeaeae;
+    color: #f6f6f6;
 }
 
 .social__link:hover{
     color: #303135;
-    background-color: #aeaeae;
+    background-color: #f6f6f6;
 }
 
 .social__link__icon{
@@ -411,4 +412,10 @@ body {
     display:flex;
     align-items: center;
     padding: 1rem 0;
+}
+
+@media only screen and (max-width:990px){
+    .navbar-item{
+        text-align: center;
+    }
 }

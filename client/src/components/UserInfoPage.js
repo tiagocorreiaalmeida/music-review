@@ -61,7 +61,7 @@ export class UserInfoPage extends React.Component {
                 <section className="hero is-small is-white is-bold promo-block">
                     <div className="hero-body">
                         <figure className="image is-192x192 margin-auto">
-                            {this.state.user.avatar && (<img src={"data:image/jpeg;base64," + this.state.user.avatar} className="rounded mg-bottom-small" avatar="user avatar" />)}
+                            {this.state.user.avatar && (<img src={"data:image/jpeg;base64," + this.state.user.avatar} className="rounded mg-bottom-small" alt="user avatar" />)}
                         </figure>
                         <p className="has-text-centered is-size-4 has-text-weight-bold has-text-grey-dark">{this.state.user.username}</p>
                         <p className="has-text-centered has-text-grey-light">Member since <i className="far fa-clock"></i> {moment(parseInt(this.state.user.createdAt, 10)).format(" Do MMMM YYYY")}</p>
@@ -93,14 +93,14 @@ export class UserInfoPage extends React.Component {
                         </li>
                     </ul>
                 </div>
-                <Posts
+                {this.state.latestPosts.length === 0 && this.state.mostRatedPosts.length === 0 ? (<p className="is-size-5 mg-top-small">The user doesn't have posts to show!</p>) : (<Posts
                     posts={
                         this.state.latest
                             ? this.state.latestPosts
                             : this.state.mostRatedPosts
                     }
                     profile={true}
-                />
+                />)}
                 {this.state.loading && (
                     <div className="spinner">
                         <div className="bounce1" />

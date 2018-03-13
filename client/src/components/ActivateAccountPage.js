@@ -18,17 +18,17 @@ export class ActivateAccountPage extends React.Component {
         return (
             <div className="container">
                 {this.state.success ? (
-                    <div className="notification is-primary">
+                    <div className="notification is-primary size-small">
                         <strong>Your account was activated with success</strong>{" "}
                         Login in and start sharing your music opinion with the
                         world!
                     </div>
                 ) : (
-                    <div className="notification  is-danger">
-                        <strong>Invalid link!</strong> Please verify your email
-                        in order to have a valid activation key!
+                        <div className="notification is-danger size-small">
+                            <strong>Invalid link!</strong> Please verify your email
+                            in order to have a valid activation key!
                     </div>
-                )}
+                    )}
             </div>
         );
     }

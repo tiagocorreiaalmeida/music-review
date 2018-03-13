@@ -1,8 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { startAppendPosts } from "../actions/myPosts";
 import Posts from "./Posts";
+
 
 export class MyPostsPage extends React.Component {
     state = {
@@ -46,7 +48,10 @@ export class MyPostsPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <Posts posts={this.props.posts} author={true} />
+                {this.props.posts.length > 0 ? (<Posts posts={this.props.posts} author={true} />) : (
+                    <p className="is-size-5 mg-top-small">No posts created yet, click <Link to="/addpost">here</Link> and create your first post!</p>
+                )}
+
                 {this.state.loading && (
                     <div className="spinner">
                         <div className="bounce1" />

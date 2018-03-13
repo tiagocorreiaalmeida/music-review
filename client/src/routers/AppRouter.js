@@ -15,6 +15,7 @@ import ActivateAccountPage from "../components/ActivateAccountPage";
 import PostInfoPage from "../components/PostInfoPage";
 import UserInfoPage from "../components/UserInfoPage";
 import { logBack } from "../actions/auth";
+import NotFoundPage from "../components/NotFoundPage";
 
 class AppRouter extends React.Component {
     componentWillMount() {
@@ -58,6 +59,9 @@ class AppRouter extends React.Component {
                             component={PostInfoPage} />
                         <Route path="/user/:username"
                             component={UserInfoPage}
+                        />
+                        <Route
+                            component={NotFoundPage}
                         />
                     </Switch>
                     <Footer />

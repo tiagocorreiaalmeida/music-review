@@ -88,7 +88,7 @@ export class PostInfo extends React.Component {
                                 </p>
                                 <a href={this.state.link} className="article__play" target="_blank">Listen to it on  <i className="fab fa-spotify article__play__icon"></i></a>
                                 <button
-                                    className="button is-primary is-size-5 has-text-weight-bold"
+                                    className="button is-primary is-size-5 has-text-weight-bold mg-top-small "
                                     onClick={this.onLikeClick}
                                 >
                                     {this.state.likes.length}

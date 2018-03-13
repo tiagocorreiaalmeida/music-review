@@ -35,10 +35,15 @@ export class EditPostPage extends React.Component {
             })
         );
 
+
+    showModal = () => this.setState(() => ({ open: true }))
+
     onRemove = () => {
         this.props.removePost(this.props.post._id);
         this.props.history.push("/myposts");
     }
+
+
 
     closeModal = () => this.setState(() => ({ open: false }))
 
@@ -79,8 +84,27 @@ export class EditPostPage extends React.Component {
                                 <PostForm
                                     onSubmit={this.onSubmit}
                                     post={this.props.post}
-                                    onRemove={this.onRemove}
+                                    onRemove={this.showModal}
                                 />
+                                <div className={`modal ${this.state.open && "is-active"}`}>
+                                    <div
+                                        className="modal-background bg-light"
+                                        onClick={this.closeModal}
+                                    />
+                                    <div className="modal-card size-small">
+                                        <header className="modal-card-head">
+                                            <p className="modal-card-title">Delete Post</p>
+                                            <button className="delete is-size-5" aria-label="close" onClick={this.closeModal}></button>
+                                        </header>
+                                        <section className="modal-card-body">
+                                            <p>Are you sure you want to delete this post? All the data related to the same will be lost!</p>
+                                        </section>
+                                        <footer className="modal-card-foot">
+                                            <button className="button is-danger is-size-5" onClick={this.onRemove}><i className="far fa-trash-alt mg-right-tiny"></i>Delete</button>
+                                            <button className="button is-primary is-size-5" onClick={this.closeModal}><i className="fas fa-times-circle mg-right-tiny"></i> Cancel</button>
+                                        </footer>
+                                    </div>
+                                </div>
                             </div>
                         )
                 }

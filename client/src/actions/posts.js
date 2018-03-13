@@ -1,7 +1,6 @@
 import axios from "axios";
 
 import { setMessages } from "./messages";
-import { setLikes } from "./myPosts";
 
 export const setPosts = (latestPosts, mostRatedPosts) => ({
     type: "SET_POSTS",

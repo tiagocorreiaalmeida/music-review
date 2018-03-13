@@ -76,8 +76,7 @@ export class PostForm extends React.Component {
         }));
     };
 
-    onSubmit = e => {
-        e.preventDefault();
+    saveData = () => {
         let error;
 
         if (
@@ -112,142 +111,140 @@ export class PostForm extends React.Component {
         return (
             <div className="card article">
                 <div className="section">
-                    <form onSubmit={this.onSubmit}>
-                        <div className="field">
-                            <div className="control">
-                                <label className="label">
-                                    Search the album by name
+                    <div className="field">
+                        <div className="control">
+                            <label className="label">
+                                Search the album by name
                                 </label>
-                                <input
-                                    className="input is-primary "
-                                    type="text"
-                                    placeholder="Primary input"
-                                    onChange={this.onSearchChange}
-                                />
-                                <div
-                                    className={
-                                        this.state.searching
-                                            ? "popover popover--active"
-                                            : "popover"
-                                    }
-                                >
-                                    {this.state.searchError ? (
-                                        <p className="popover__item is-size-5">
-                                            {this.state.searchError}
-                                        </p>
-                                    ) : (
-                                            this.state.searchResults.map(
-                                                (ele, i) => {
-                                                    return (
-                                                        <a
-                                                            className="popover__item is-size-5"
-                                                            key={i}
-                                                            onClick={() =>
-                                                                this.onAlbumClick(i)
-                                                            }
-                                                        >
-                                                            <img
-                                                                className="popover__item__thumbnail"
-                                                                alt="album thumbnail"
-                                                                src={ele.thumbnail}
-                                                            />{" "}
-                                                            {ele.albumName}
-                                                        </a>
-                                                    );
-                                                }
-                                            )
-                                        )}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="field">
-                            <div className="control">
-                                <label className="label">Album name</label>
-                                <input
-                                    className="input is-primary"
-                                    type="text"
-                                    placeholder="Primary input"
-                                    value={this.state.albumName}
-                                    disabled
-                                />
-                            </div>
-                        </div>
-                        <div className="field">
-                            <div className="control">
-                                <label className="label">Album link</label>
-                                <input
-                                    className="input is-primary"
-                                    type="text"
-                                    placeholder="Primary input"
-                                    value={this.state.albumLink}
-                                    disabled
-                                />
-                            </div>
-                        </div>
-                        <div className="field">
-                            <div className="control">
-                                <label className="label">Artists</label>
-                                <input
-                                    className="input is-primary"
-                                    type="text"
-                                    placeholder="Primary input"
-                                    value={this.state.artists.reduce(
-                                        (a, b) => a + "," + b.name,
-                                        ""
-                                    )}
-                                    disabled
-                                />
-                            </div>
-                        </div>
-                        <div className="field">
-                            <div className="control">
-                                <label className="label">Title</label>
-                                <input
-                                    className="input is-primary"
-                                    type="text"
-                                    placeholder="Primary input"
-                                    value={this.state.title}
-                                    onChange={this.onTitleChange}
-                                />
-                            </div>
-                        </div>
-                        <div className="field">
-                            <div className="control">
-                                <label className="label">Review</label>
-                                <textarea
-                                    className="textarea is-primary"
-                                    type="text"
-                                    placeholder="Tell us what do you think about the album"
-                                    value={this.state.review}
-                                    onChange={this.onReviewChange}
-                                />
-                            </div>
-                        </div>
-                        {this.props.errorMessage && (
-                            <p className="notification is-danger">
-                                <i className="fas fa-exclamation-triangle mg-right-tiny"></i>{this.props.errorMessage}
-                            </p>
-                        )}
-
-                        {this.props.successMessage && (
-                            <p className="notification is-success">
-                                <i className="far fa-save mg-right-tiny"></i>{this.props.successMessage}
-                            </p>
-                        )}
-
-                        <button className="button is-primary is-size-5 has-text-weight-bold mg-right-small">
-                            <i className="fas fa-check mg-right-tiny"></i>
-                            {this.props.post ? "Save changes" : "Create"}
-                        </button>
-                        {this.props.onRemove && (
-                            <button
-                                className="button is-danger is-size-5 has-text-weight-bold"
-                                onClick={this.props.onRemove}
+                            <input
+                                className="input is-primary "
+                                type="text"
+                                placeholder="Primary input"
+                                onChange={this.onSearchChange}
+                            />
+                            <div
+                                className={
+                                    this.state.searching
+                                        ? "popover popover--active"
+                                        : "popover"
+                                }
                             >
-                                <i className="fas fa-trash-alt mg-right-tiny"></i>Delete
+                                {this.state.searchError ? (
+                                    <p className="popover__item is-size-5">
+                                        {this.state.searchError}
+                                    </p>
+                                ) : (
+                                        this.state.searchResults.map(
+                                            (ele, i) => {
+                                                return (
+                                                    <a
+                                                        className="popover__item is-size-5"
+                                                        key={i}
+                                                        onClick={() =>
+                                                            this.onAlbumClick(i)
+                                                        }
+                                                    >
+                                                        <img
+                                                            className="popover__item__thumbnail"
+                                                            alt="album thumbnail"
+                                                            src={ele.thumbnail}
+                                                        />{" "}
+                                                        {ele.albumName}
+                                                    </a>
+                                                );
+                                            }
+                                        )
+                                    )}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="field">
+                        <div className="control">
+                            <label className="label">Album name</label>
+                            <input
+                                className="input is-primary"
+                                type="text"
+                                placeholder="Primary input"
+                                value={this.state.albumName}
+                                disabled
+                            />
+                        </div>
+                    </div>
+                    <div className="field">
+                        <div className="control">
+                            <label className="label">Album link</label>
+                            <input
+                                className="input is-primary"
+                                type="text"
+                                placeholder="Primary input"
+                                value={this.state.albumLink}
+                                disabled
+                            />
+                        </div>
+                    </div>
+                    <div className="field">
+                        <div className="control">
+                            <label className="label">Artists</label>
+                            <input
+                                className="input is-primary"
+                                type="text"
+                                placeholder="Primary input"
+                                value={this.state.artists.reduce(
+                                    (a, b) => a + "," + b.name,
+                                    ""
+                                )}
+                                disabled
+                            />
+                        </div>
+                    </div>
+                    <div className="field">
+                        <div className="control">
+                            <label className="label">Title</label>
+                            <input
+                                className="input is-primary"
+                                type="text"
+                                placeholder="Primary input"
+                                value={this.state.title}
+                                onChange={this.onTitleChange}
+                            />
+                        </div>
+                    </div>
+                    <div className="field">
+                        <div className="control">
+                            <label className="label">Review</label>
+                            <textarea
+                                className="textarea is-primary"
+                                type="text"
+                                placeholder="Tell us what do you think about the album"
+                                value={this.state.review}
+                                onChange={this.onReviewChange}
+                            />
+                        </div>
+                    </div>
+                    {this.props.errorMessage && (
+                        <p className="notification is-danger">
+                            <i className="fas fa-exclamation-triangle mg-right-tiny"></i>{this.props.errorMessage}
+                        </p>
+                    )}
+
+                    {this.props.successMessage && (
+                        <p className="notification is-success">
+                            <i className="far fa-save mg-right-tiny"></i>{this.props.successMessage}
+                        </p>
+                    )}
+
+                    <button onClick={this.saveData} className="button is-primary is-size-5 has-text-weight-bold mg-right-small">
+                        <i className="fas fa-check mg-right-tiny"></i>
+                        {this.props.post ? "Save changes" : "Create"}
+                    </button>
+                    {this.props.onRemove && (
+                        <button
+                            className="button is-danger is-size-5 has-text-weight-bold"
+                            onClick={this.props.onRemove}
+                        >
+                            <i className="fas fa-trash-alt mg-right-tiny"></i>Delete
                             </button>
-                        )}
-                    </form>
+                    )}
                 </div>
             </div>
         );
