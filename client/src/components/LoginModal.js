@@ -83,7 +83,7 @@ export class LoginModal extends React.Component {
                 .then(response => {
                     this.setState(() => ({
                         error: "",
-                        successMessage: "Your account has been created!",
+                        successMessage: "Account created, check your email!",
                         email: "",
                         username: "",
                         password: "",

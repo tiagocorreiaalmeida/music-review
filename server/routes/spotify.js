@@ -2,29 +2,18 @@ import express from "express";
 import SpotifyWebApi from "spotify-web-api-node";
 
 import auth from "../utils/auth";
+import getOrRefreshToken from "../utils/token";
 
 const router = express.Router(),
-    spotifyApi = new SpotifyWebApi({
-        clientId: process.env.SPOTIFY_ID,
-        clientSecret: process.env.SPOTIFY_KEY
-    });
-
-
-async function setSpotifyAccessToken() {
-    try {
-        let data = await spotifyApi.clientCredentialsGrant();
-        spotifyApi.setAccessToken(data.body["access_token"]);
-        spotifyApi.setRefreshToken(data.body["refresh_token"]);
-    } catch (e) {
-        console.log(e);
-    }
-}
-
-setSpotifyAccessToken();
+    spotifyApi = new SpotifyWebApi();
 
 router.get(/(.+)/, auth, async (req, res) => {
     let albumName = req.params[0];
     try {
+
+        const token = await getOrRefreshToken();
+        spotifyApi.setAccessToken(token);
+
         let apiResponse = await spotifyApi.searchAlbums(albumName, {
             limit: 3
         });
@@ -42,11 +31,6 @@ router.get(/(.+)/, auth, async (req, res) => {
         }));
         res.send(dataClean);
     } catch (e) {
-        if (e.statusCode == 401 && e.name == "WebapiError") {
-            return spotifyApi.refreshAccessToken()
-                .then((data) =>
-                    spotifyApi.setAccessToken(data.body['access_token']));
-        }
         res.error(
             500,
             "Something went wrong please refresh the page and try again",

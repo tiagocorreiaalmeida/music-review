@@ -2,6 +2,7 @@ import express from "express";
 import session from "express-session";
 import passport from "passport";
 import cors from "cors";
+import NodeCache from "node-cache";
 
 import mongoose from "./config/mongoose";
 import errorHandler from "./utils/errorHandler";
@@ -12,6 +13,8 @@ import post from "./routes/post";
 
 const app = express(),
     port = process.env.PORT || 5000;
+
+export const appCache = new NodeCache();
 
 passportConfig(passport);
 
